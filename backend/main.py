@@ -12,7 +12,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # --- App Setup ---
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=30)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=60)
 jwt = JWTManager(app)
 
 # --- Swagger / OpenAPI Setup ---
@@ -215,6 +215,28 @@ class Transfer(Resource):
             'transaction': {'id': tx_id, 'date': date, 'amount': -amount, 'description': f'P2P to {to_acc}'},
             'new_balance': new_bal
         }
+
+
+@wallet_ns.route('/test')
+
+class WalletTest(Resource):
+    @jwt_required()
+    @wallet_ns.doc(security='BearerAuth')
+    @wallet_ns.marshal_with(account_model)
+    def get(self):
+        """Restituisce il conto dell'utente"""
+       
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT * FROM accounts a JOIN users u"
+            " ON a.user_id = u.id "
+        )
+        rows = cur.fetchall()
+        conn.close()
+        if not rows:
+            api.abort(404, 'Account not found')
+        return rows
 
 # --- Health Endpoint ---
 @api.route('/hello')
