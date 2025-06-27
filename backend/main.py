@@ -1,179 +1,239 @@
 # backend/main.py
-from fastapi import FastAPI, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from pydantic import BaseModel, ConfigDict
-from typing import List, Optional
-from datetime import datetime, timedelta
-from jose import JWTError, jwt
+#Bearer WQwNzFmIiwiZXhwIjoxNzUxMDEzNjk1fQ...
+import sqlite3
 import uuid
+from datetime import datetime, timedelta
+from flask import Flask, jsonify, request
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_restx import Api, Resource, fields
+from werkzeug.security import generate_password_hash, check_password_hash
 
-from sqlalchemy import create_engine, ForeignKey
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker, Session
+# --- App Setup ---
+app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=30)
+jwt = JWTManager(app)
 
-# --- JWT config ---
-SECRET_KEY = "your-secret-key"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
+# --- Swagger / OpenAPI Setup ---
+authorizations = {
+    'BearerAuth': {
+        'type': 'apiKey',
+        'in': 'header',
+        'name': 'Authorization',
+        'description': "Inserisci: **Bearer <JWT>**"
+    }
+}
+api = Api(
+    app,
+    version='1.0',
+    title='Mock Satispay API',
+    description='API RESTful con Swagger UI per Satispay simulation',
+    doc='/docs',  # Swagger UI path
+    authorizations=authorizations,
+    security='BearerAuth'
+)
 
-# --- Database setup ---
-SQLALCHEMY_DATABASE_URL = "sqlite:///./satispay.db"
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
-SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+# --- Models for Swagger ---
+login_model = api.model('Login', {
+    'username': fields.String(required=True, description="Username dell'utente"),
+    'password': fields.String(required=True, description='Password in chiaro')
+})
+account_model = api.model('Account', {
+    'id': fields.String(description='ID del conto'),
+    'holder': fields.String(description='Nome del titolare'),
+    'balance': fields.Float(description='Saldo attuale')
+})
+transaction_model = api.model('Transaction', {
+    'id': fields.String(description='ID operazione'),
+    'date': fields.String(description='Timestamp ISO della transazione'),
+    'amount': fields.Float(description='Importo'),
+    'description': fields.String(description='Descrizione')
+})
+transfer_model = api.model('Transfer', {
+    'to_account': fields.String(required=True, description='Account di destinazione'),
+    'amount': fields.Float(required=True, description='Importo del bonifico')
+})
+transfer_response = api.inherit('TransferResponse', transfer_model, {
+    'status': fields.String(description='Status operazione'),
+    'transaction': fields.Nested(transaction_model),
+    'new_balance': fields.Float(description='Nuovo saldo')
+})
 
-# --- SQLAlchemy Base ---
-class Base(DeclarativeBase):
-    pass
+# --- Database helper ---
+DB_PATH = './satispay.db'
 
-# --- ORM models ---
-class UserDB(Base):
-    __tablename__ = "users"
-    id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(nullable=False, unique=True)
-    full_name: Mapped[str] = mapped_column(nullable=False)
-    hashed_password: Mapped[str] = mapped_column(nullable=False)
-    account: Mapped["AccountDB"] = relationship(back_populates="owner", uselist=False)
+def get_db_connection():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
 
-class AccountDB(Base):
-    __tablename__ = "accounts"
-    id: Mapped[str] = mapped_column(primary_key=True)
-    holder: Mapped[str] = mapped_column(nullable=False)
-    balance: Mapped[float] = mapped_column(nullable=False, default=0.0)
-    owner_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-    owner: Mapped[UserDB] = relationship(back_populates="account")
-    transactions: Mapped[List["TransactionDB"]] = relationship(back_populates="account")
-
-class TransactionDB(Base):
-    __tablename__ = "transactions"
-    id: Mapped[str] = mapped_column(primary_key=True)
-    date: Mapped[datetime] = mapped_column(nullable=False, default=datetime.utcnow)
-    amount: Mapped[float] = mapped_column(nullable=False)
-    description: Mapped[str] = mapped_column(nullable=True)
-    account_id: Mapped[str] = mapped_column(ForeignKey("accounts.id"), nullable=False)
-    account: Mapped[AccountDB] = relationship(back_populates="transactions")
-
-Base.metadata.create_all(bind=engine)
-
-# --- Pydantic schemas ---
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-class TokenData(BaseModel):
-    username: Optional[str] = None
-
-class Account(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-    id: str
-    holder: str
-    balance: float
-
-class Transaction(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-    id: str
-    date: datetime
-    amount: float
-    description: Optional[str] = None
-
-class TransferRequest(BaseModel):
-    to_account: str
-    amount: float
-
-class TransferResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-    status: str
-    transaction: Transaction
-    new_balance: float
-
-# --- App init ---
-app = FastAPI(title="Mock Satispay Backend", version="1.2.0")
-
-# --- DB dependency ---
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-# --- Auth utils ---
-def verify_password(plain: str, hashed: str) -> bool:
-    return plain == hashed  # sostituire con hashing reale
-
-def get_user(db: Session, username: str) -> Optional[UserDB]:
-    return db.query(UserDB).filter(UserDB.username == username).first()
-
-def authenticate_user(db: Session, username: str, password: str) -> Optional[UserDB]:
-    user = get_user(db, username)
-    if not user or not verify_password(password, user.hashed_password):
-        return None
-    return user
-
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
-    to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=15))
-    to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
-async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> UserDB:
-    credentials_exc = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: Optional[str] = payload.get("sub")
-        if username is None:
-            raise credentials_exc
-    except JWTError:
-        raise credentials_exc
-    user = get_user(db, username)
-    if user is None:
-        raise credentials_exc
-    return user
-
-# --- Create default data ---
 def init_db():
-    db = SessionLocal()
-    if not get_user(db, "alice"):
-        usr = UserDB(username="alice", full_name="Alice Rossi", hashed_password="secret")
-        db.add(usr)
-        db.commit()
-        db.refresh(usr)
-        acct = AccountDB(id="WALLET-ALICE-001", holder=usr.full_name, balance=1000.0, owner_id=usr.id)
-        db.add(acct)
-        db.commit()
-    db.close()
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            full_name TEXT NOT NULL,
+            password_hash TEXT NOT NULL
+        )
+    ''')
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS accounts (
+            id TEXT PRIMARY KEY,
+            holder TEXT NOT NULL,
+            balance REAL NOT NULL,
+            user_id INTEGER NOT NULL,
+            FOREIGN KEY(user_id) REFERENCES users(id)
+        )
+    ''')
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS transactions (
+            id TEXT PRIMARY KEY,
+            date TEXT NOT NULL,
+            amount REAL NOT NULL,
+            description TEXT,
+            account_id TEXT NOT NULL,
+            FOREIGN KEY(account_id) REFERENCES accounts(id)
+        )
+    ''')
+    conn.commit()
+    cur.execute("SELECT * FROM users WHERE username = ?", ('alice',))
+    if cur.fetchone() is None:
+        pw_hash = generate_password_hash('secret')
+        cur.execute("INSERT INTO users (username, full_name, password_hash) VALUES (?, ?, ?)",
+                    ('alice', 'Alice Rossi', pw_hash))
+        user_id = cur.lastrowid
+        acct_id = 'WALLET-ALICE-001'
+        cur.execute("INSERT INTO accounts (id, holder, balance, user_id) VALUES (?, ?, ?, ?)",
+                    (acct_id, 'Alice Rossi', 1000.0, user_id))
+    conn.commit()
+    conn.close()
 
 init_db()
 
-# --- Auth endpoint ---
-@app.post("/token", response_model=Token)
-async def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = authenticate_user(db, form.username, form.password)
-    if not user:
-        raise HTTPException(status_code=401, detail="Incorrect username or password")
-    token = create_access_token(data={"sub": user.username}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
-    return {"access_token": token, "token_type": "bearer"}
+# --- Namespaces ---
+auth_ns = api.namespace('auth', description='Autenticazione')
+wallet_ns = api.namespace('wallet', description='Gestione conto')
+tx_ns = api.namespace('transactions', description='Transazioni')
 
-# --- API endpoints ---
-@app.get("/api/wallet", response_model=Account)
-async def read_wallet(user: UserDB = Depends(get_current_user)):
-    return user.account
+# --- Auth Endpoints ---
+@auth_ns.route('/login')
+class Login(Resource):
+    @auth_ns.expect(login_model)
+    @auth_ns.response(200, 'Success', model=api.model('Token', {'access_token': fields.String()}))
+    @auth_ns.response(401, 'Unauthorized')
+    def post(self):
+        """Login e genera JWT"""
+        data = request.get_json()
+        if not data:
+            api.abort(400, 'Missing JSON in request')
+        username = data.get('username')
+        password = data.get('password')
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM users WHERE username = ?", (username,))
+        row = cur.fetchone()
+        conn.close()
+        if row and check_password_hash(row['password_hash'], password):
+            token = create_access_token(identity=username)
+            return {'access_token': token}, 200
+        api.abort(401, 'Bad username or password')
 
-@app.get("/api/wallet/transactions", response_model=List[Transaction])
-async def read_transactions(user: UserDB = Depends(get_current_user)):
-    return user.account.transactions
+# --- Wallet Endpoints ---
+@wallet_ns.route('')
+class Wallet(Resource):
+    @jwt_required()
+    @wallet_ns.doc(security='BearerAuth')
+    @wallet_ns.marshal_with(account_model)
+    def get(self):
+        """Restituisce il conto dell'utente"""
+        user = get_jwt_identity()
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT a.id, a.holder, a.balance FROM accounts a JOIN users u"
+            " ON a.user_id = u.id WHERE u.username = ?", (user,)
+        )
+        row = cur.fetchone()
+        conn.close()
+        if not row:
+            api.abort(404, 'Account not found')
+        return {'id': row['id'], 'holder': row['holder'], 'balance': row['balance']}
 
-@app.post("/api/wallet/transfer", response_model=TransferResponse)
-async def create_transfer(req: TransferRequest, user: UserDB = Depends(get_current_user), db: Session = Depends(get_db)):
-    acct = user.account
-    if req.amount <= 0 or req.amount > acct.balance:
-        raise HTTPException(status_code=400, detail="Invalid amount or insufficient balance")
-    acct.balance -= req.amount
-    tx = TransactionDB(id=str(uuid.uuid4()), date=datetime.utcnow(), amount=-req.amount,
-                      description=f"P2P transfer to {req.to_account}", account_id=acct.id)
-    db.add(tx); db.commit(); db.refresh(tx)
-    tx_schema = Transaction.model_validate(tx)
-    return TransferResponse(status="success", transaction=tx_schema, new_balance=acct.balance)
+# --- Transactions Endpoints ---
+@tx_ns.route('')
+class Transactions(Resource):
+    @jwt_required()
+    @tx_ns.doc(security='BearerAuth')
+    @tx_ns.marshal_list_with(transaction_model)
+    def get(self):
+        """Elenco transazioni dell'utente"""
+        user = get_jwt_identity()
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT a.id FROM accounts a JOIN users u ON a.user_id = u.id WHERE u.username = ?", (user,)
+        )
+        acct = cur.fetchone()
+        if not acct:
+            conn.close()
+            api.abort(404, 'Account not found')
+        cur.execute(
+            "SELECT * FROM transactions WHERE account_id = ? ORDER BY date DESC", (acct['id'],)
+        )
+        rows = cur.fetchall()
+        conn.close()
+        return [{'id': r['id'], 'date': r['date'], 'amount': r['amount'], 'description': r['description']} for r in rows]
+
+@tx_ns.route('/transfer')
+class Transfer(Resource):
+    @jwt_required()
+    @tx_ns.doc(security='BearerAuth')
+    @tx_ns.expect(transfer_model)
+    @tx_ns.marshal_with(transfer_response)
+    def post(self):
+        """Esegue un bonifico interno"""
+        data = request.get_json()
+        if not data:
+            api.abort(400, 'Missing JSON in request')
+        to_acc = data.get('to_account')
+        amount = data.get('amount')
+        if amount is None or amount <= 0:
+            api.abort(400, 'Invalid amount')
+        user = get_jwt_identity()
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT a.id, a.balance FROM accounts a JOIN users u ON a.user_id = u.id WHERE u.username = ?", (user,)
+        )
+        acct = cur.fetchone()
+        if not acct or amount > acct['balance']:
+            conn.close()
+            api.abort(400, 'Insufficient balance')
+        new_bal = acct['balance'] - amount
+        cur.execute("UPDATE accounts SET balance = ? WHERE id = ?", (new_bal, acct['id']))
+        tx_id = str(uuid.uuid4())
+        date = datetime.utcnow().isoformat()
+        cur.execute(
+            "INSERT INTO transactions (id, date, amount, description, account_id) VALUES (?, ?, ?, ?, ?)",
+            (tx_id, date, -amount, f'P2P to {to_acc}', acct['id'])
+        )
+        conn.commit()
+        conn.close()
+        return {
+            'status': 'success',
+            'transaction': {'id': tx_id, 'date': date, 'amount': -amount, 'description': f'P2P to {to_acc}'},
+            'new_balance': new_bal
+        }
+
+# --- Health Endpoint ---
+@api.route('/hello')
+class Hello(Resource):
+    def get(self):
+        """Endpoint di health-check"""
+        return {'message': 'Hello, world!'}
+
+# --- Run Server ---
+if __name__ == '__main__':
+    app.run(debug=True, host='127.0.0.1', port=8000)
