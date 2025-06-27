@@ -13,7 +13,6 @@ call .venv\Scripts\activate.bat
 echo.
 echo ==============================================
 echo L'ambiente virtuale è pronto e attivo!
-echo Per attivarlo in futuro: call .venv\Scripts\activate.bat
 echo Per avviare l'app: python backend\main.py
 echo ==============================================
 pause
