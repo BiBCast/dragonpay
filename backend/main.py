@@ -5,12 +5,14 @@ import sqlite3
 import uuid
 from datetime import datetime, timedelta, timezone
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_restx import Api, Resource, fields
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # --- App Setup ---
 app = Flask(__name__)
+CORS(app, origins=["http://localhost:4200"])
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=60)
 jwt = JWTManager(app)
