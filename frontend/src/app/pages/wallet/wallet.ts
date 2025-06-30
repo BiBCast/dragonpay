@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { AuthService } from '../../auth.services';
+import { Account } from '../../../api-client/data-contracts';
 
 @Component({
   standalone: true,
@@ -10,9 +11,15 @@ import { AuthService } from '../../auth.services';
   template: `
     <div class="wallet">
       <button (click)="logout()">Logout</button>
-      <div *ngIf="account">
-        <h2>{{ account.holder }}</h2>
-        <p>Balance: €{{ account.balance }}</p>
+      <div *ngIf="items">
+        @for (item of items; track item.holder) {
+        <h2>{{ item.holder }}</h2>
+        <p>Balance: €{{ item.balance }}</p>
+        } @empty {
+        <li>There are no items.</li>
+        }
+        <!-- <h2>{{ account.holder }}</h2>
+        <p>Balance: €{{ account.balance }}</p> -->
       </div>
     </div>
   `,
@@ -25,11 +32,14 @@ import { AuthService } from '../../auth.services';
   ],
 })
 export class WalletPageComponent {
-  account: any;
+  items: Account[] = [];
   constructor(private http: HttpClient, private auth: AuthService) {
+    this.http;
     this.http
-      .get('http://localhost:8000/wallet')
-      .subscribe((acc) => (this.account = acc));
+      .get<Account[]>('http://localhost:8000/wallet')
+      .subscribe((acc) => {
+        this.items = Array.isArray(acc) ? acc : [acc];
+      });
   }
   logout() {
     this.auth.logout();

@@ -4,7 +4,7 @@ import {
   HttpHandler,
   HttpEvent,
 } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AuthService } from './pages/login/login';
 import { Observable } from 'rxjs';
 
