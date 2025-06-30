@@ -15,6 +15,7 @@ app = Flask(__name__)
 CORS(app, origins=["http://localhost:4200"])
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=60)
+app.config['DEBUG'] = True
 jwt = JWTManager(app)
 
 # --- Swagger / OpenAPI Setup ---
@@ -68,6 +69,11 @@ DB_PATH = './satispay.db'
 def get_db_connection():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
+    # Enable SQL query logging
+    if app.debug:
+        def trace_callback(statement):
+            print(f"[SQL] {statement}")
+        conn.set_trace_callback(trace_callback)
     return conn
 
 
@@ -143,7 +149,7 @@ class Wallet(Resource):
         conn = get_db_connection()
         cur = conn.cursor()
         cur.execute(
-            "SELECT a.id, a.holder, a.balance FROM accounts a JOIN users u"
+            "SELECT * FROM accounts a JOIN users u"
             " ON a.user_id = u.id WHERE u.username = ?", (user,)
         )
         row = cur.fetchone()
