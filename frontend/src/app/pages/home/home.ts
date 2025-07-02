@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Account, Transaction } from '../../../api-client/data-contracts';
-import { Transactions } from '../../../api-client/Transactions';
 
 @Component({
   standalone: true,

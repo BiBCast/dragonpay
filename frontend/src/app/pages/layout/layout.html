@@ -83,15 +83,25 @@
         </a>
       </nav>
 
+      <!-- ...existing code... -->
       <div class="sidebar-footer">
         <div class="user-info">
-          <div class="user-avatar">M</div>
+          <div class="user-avatar">
+            {{
+              (user$ | async)?.full_name?.[0] || "U"
+            }}
+          </div>
           <div class="user-details" *ngIf="!isSidebarCollapsed">
-            <div class="user-name">Mario Rossi</div>
-            <div class="user-email">mario example.com</div>
+            <div class="user-name">
+              {{ (user$ | async)?.full_name || "Utente" }}
+            </div>
+            <div class="user-email">
+              {{ (user$ | async)?.email || "" }}
+            </div>
           </div>
         </div>
       </div>
+      <!-- ...existing code... -->
     </aside>
 
     <!-- Main Content Area -->

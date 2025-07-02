@@ -15,6 +15,8 @@ export class MainLayoutComponent {
   isSidebarCollapsed = false;
 
   auth = inject(AuthService);
+  user$ = this.auth.getUserProfile(); // Observable<User | null>
+
   logout() {
     this.auth.logout();
   }

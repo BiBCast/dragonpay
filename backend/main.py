@@ -161,19 +161,21 @@ class Login(Resource):
             return {'access_token': token}
         api.abort(401, 'Bad credentials')
 
-# --- Users ---
-@users_ns.route('')
-class UsersList(Resource):
+# --- Current User ---
+@users_ns.route('/me')
+class CurrentUser(Resource):
     @jwt_required()
-    @users_ns.marshal_list_with(user_model)
+    @users_ns.marshal_with(user_model)
     def get(self):
+        user_id = get_jwt_identity()
         conn = get_db_connection()
-        rows = conn.execute(
-            "SELECT id, username, full_name, email, created_at FROM users"
-        ).fetchall()
+        row = conn.execute(
+            "SELECT id, username, full_name, email, created_at FROM users WHERE id = ?", (user_id,)
+        ).fetchone()
         conn.close()
-        # Return plain rows so Flask‑RESTX can marshal them:
-        return rows
+        if not row:
+            api.abort(404, 'User not found')
+        return row
 
 
 @wallet_ns.route('/test')
