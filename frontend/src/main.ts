@@ -15,12 +15,14 @@ import { routes } from './app/app.routes';
 import { importProvidersFrom } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ErrorInterceptor } from './app/error.interceptor';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()), // supporto HttpClient + interceptor
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     importProvidersFrom(CommonModule, ReactiveFormsModule),
   ],
 });

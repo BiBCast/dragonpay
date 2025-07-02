@@ -1,6 +1,9 @@
 // home.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Account, Transaction } from '../../../api-client/data-contracts';
+import { Transactions } from '../../../api-client/Transactions';
 
 @Component({
   standalone: true,
@@ -10,6 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './home.css',
 })
 export class HomeComponent implements OnInit {
+  constructor(private http: HttpClient) {}
   stats = [
     {
       title: 'Total Balance',
@@ -80,7 +84,29 @@ export class HomeComponent implements OnInit {
   ];
 
   ngOnInit() {
-    // Component initialization
+    this.getWallet().subscribe((wallet) => {
+      // Example: populate stats from wallet
+      this.stats = [
+        {
+          title: 'Total Balance',
+          value: wallet.length ? `€${wallet[0].balance}` : '€0.00',
+          icon: '💰',
+          trend: '+0%',
+          trendUp: true,
+        },
+        // ...other stats as needed
+      ];
+    });
+
+    this.getTransactions().subscribe((transactions) => {
+      this.recentTransactions = transactions.map((tx) => ({
+        type: tx.type ?? '',
+        merchant: tx.description ?? tx.type ?? '',
+        amount: tx.amount ?? 0,
+        date: tx.created_at ?? '',
+        icon: '💸', // or map to a real icon
+      }));
+    });
   }
 
   onQuickAction(action: string) {
@@ -100,6 +126,13 @@ export class HomeComponent implements OnInit {
       month: 'long',
       day: 'numeric',
     });
+  }
+  getWallet() {
+    return this.http.get<Account[]>('http://localhost:8000/wallet');
+  }
+
+  getTransactions() {
+    return this.http.get<Transaction[]>('http://localhost:8000/transactions');
   }
 
   getAbsoluteValue(amount: number): string {
