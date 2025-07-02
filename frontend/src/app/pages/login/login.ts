@@ -28,7 +28,7 @@ export class LoginPageComponent {
     this.auth.login(username!, password!).subscribe({
       next: (ok) => {
         this.loading = false;
-        if (ok) this.router.navigate(['/wallet']);
+        if (ok) this.router.navigate(['/home']);
         else this.errorMsg = 'Login failed';
       },
       error: () => {
