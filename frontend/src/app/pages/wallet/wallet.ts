@@ -20,12 +20,12 @@ import { Account } from '../../../api-client/data-contracts';
 export class WalletPageComponent {
   items: Account[] = [];
   constructor(private http: HttpClient, private auth: AuthService) {
-    this.http;
-    this.http
-      .get<Account[]>('http://localhost:8000/wallet')
-      .subscribe((acc) => {
-        this.items = Array.isArray(acc) ? acc : [acc];
-      });
+    // this.http;
+    // this.http
+    //   .get<Account[]>('http://localhost:8000/wallet')
+    //   .subscribe((acc) => {
+    //     this.items = Array.isArray(acc) ? acc : [acc];
+    //   });
   }
   logout() {
     this.auth.logout();

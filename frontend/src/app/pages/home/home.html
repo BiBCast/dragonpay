@@ -1,1 +1,95 @@
-<p>home works!</p>
+<!-- home.component.html -->
+<div class="home-container">
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <div class="welcome-content">
+      <h1 class="welcome-title">Welcome back! 👋</h1>
+      <p class="welcome-subtitle">Here's your financial overview for today</p>
+    </div>
+    <div class="welcome-date">
+      <span class="date-text">{{ getCurrentDate() }}</span>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let stat of stats">
+      <div class="stat-header">
+        <div class="stat-icon">{{ stat.icon }}</div>
+        <div
+          class="stat-trend"
+          [class.positive]="stat.trendUp"
+          [class.negative]="!stat.trendUp"
+        >
+          {{ stat.trend }}
+        </div>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ stat.value }}</div>
+        <div class="stat-title">{{ stat.title }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions-section">
+    <h2 class="section-title">Quick Actions</h2>
+    <div class="quick-actions-grid">
+      <button
+        class="action-button"
+        *ngFor="let action of quickActions"
+        (click)="onQuickAction(action.action)"
+      >
+        <div class="action-icon">{{ action.icon }}</div>
+        <div class="action-title">{{ action.title }}</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="transactions-section">
+    <div class="section-header">
+      <h2 class="section-title">Recent Transactions</h2>
+      <button class="view-all-btn" (click)="viewAllTransactions()">
+        View All
+      </button>
+    </div>
+
+    <div class="transactions-list">
+      <div
+        class="transaction-item"
+        *ngFor="let transaction of recentTransactions"
+      >
+        <div class="transaction-icon">{{ transaction.icon }}</div>
+        <div class="transaction-info">
+          <div class="transaction-merchant">{{ transaction.merchant }}</div>
+          <div class="transaction-date">{{ transaction.date }}</div>
+        </div>
+        <div
+          class="transaction-amount"
+          [class.positive]="transaction.amount > 0"
+          [class.negative]="transaction.amount < 0"
+        >
+          {{ transaction.amount > 0 ? "+" : "" }}€{{
+            getAbsoluteValue(transaction.amount)
+          }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Financial Tips -->
+  <div class="tips-section">
+    <h2 class="section-title">💡 Smart Tip</h2>
+    <div class="tip-card">
+      <div class="tip-content">
+        <h3 class="tip-title">Cashback Opportunity</h3>
+        <p class="tip-description">
+          You can earn up to 2% cashback at selected restaurants this week.
+          Check out our partner locations in the app!
+        </p>
+      </div>
+      <button class="tip-action">Learn More</button>
+    </div>
+  </div>
+</div>

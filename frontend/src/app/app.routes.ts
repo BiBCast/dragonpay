@@ -7,6 +7,7 @@ import { ProfileComponent } from './pages/profile/profile';
 import { SettingsComponent } from './pages/settings/settings';
 import { ReportsComponent } from './pages/reports/reports';
 import { MessagesComponent } from './pages/messages/messages';
+import { WalletPageComponent } from './pages/wallet/wallet';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -21,6 +22,7 @@ export const routes: Routes = [
       { path: 'settings', component: SettingsComponent },
       { path: 'reports', component: ReportsComponent },
       { path: 'messages', component: MessagesComponent },
+      { path: 'wallet', component: WalletPageComponent },
     ],
   },
   { path: '**', redirectTo: '/login' },

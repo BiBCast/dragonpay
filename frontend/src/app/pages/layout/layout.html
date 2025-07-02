@@ -1,1 +1,102 @@
-<p>layout works!</p>
+<!-- main-layout.component.html -->
+<div class="layout-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="menu-toggle" (click)="toggleSidebar()">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+        <div class="logo">
+          <div class="logo-icon">S</div>
+          <h1 class="logo-text">Satispay</h1>
+        </div>
+      </div>
+
+      <nav class="header-nav">
+        <button class="nav-button profile-btn">
+          <span class="nav-icon">👤</span>
+          <span class="nav-text">Profile</span>
+        </button>
+        <button class="nav-button notifications-btn">
+          <span class="nav-icon">🔔</span>
+          <span class="nav-text">Notifications</span>
+          <span class="notification-badge">3</span>
+        </button>
+        <button class="nav-button logout-btn">
+          <span class="nav-icon">🚪</span>
+          <span class="nav-text" (click)="logout()">Logout</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <!-- Sidebar -->
+    <aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
+      <nav class="sidebar-nav">
+        <a
+          routerLink="/home/dashboard"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a
+          routerLink="/home/profile"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-icon">👤</span>
+          <span class="nav-label">Profile</span>
+        </a>
+        <a
+          routerLink="/home/settings"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Settings</span>
+        </a>
+        <a
+          routerLink="/home/reports"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-icon">📑</span>
+          <span class="nav-label">Reports</span>
+        </a>
+        <a
+          routerLink="/home/messages"
+          routerLinkActive="active"
+          class="nav-link"
+        >
+          <span class="nav-icon">💬</span>
+          <span class="nav-label">Messages</span>
+        </a>
+        <a routerLink="/home/wallet" routerLinkActive="active" class="nav-link">
+          <span class="nav-icon">💰</span>
+          <span class="nav-label">Wallet</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">M</div>
+          <div class="user-details" *ngIf="!isSidebarCollapsed">
+            <div class="user-name">Mario Rossi</div>
+            <div class="user-email">mario example.com</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

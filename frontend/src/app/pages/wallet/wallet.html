@@ -1,5 +1,5 @@
 <div class="wallet">
-  <button (click)="logout()">Logout</button>
+  <button>Logout</button>
   <div *ngIf="items">
     @for (item of items; track item.user_id) {
     <h2>{{ item.user_id }}</h2>
