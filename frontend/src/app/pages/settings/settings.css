@@ -1,0 +1,33 @@
+/* Settings Specific Styles */
+.settings-section {
+  margin-bottom: 32px;
+}
+
+.settings-section h3 {
+  color: var(--satispay-gray-900);
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--satispay-gray-200);
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.setting-item span {
+  color: var(--satispay-gray-700);
+  font-weight: 500;
+}
+
+.setting-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--satispay-orange);
+}

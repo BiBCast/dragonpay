@@ -1,0 +1,52 @@
+/* Wallet Specific Styles */
+.wallet-balance {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.balance-amount {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--satispay-gray-900);
+  margin-bottom: 8px;
+}
+
+.balance-label {
+  color: var(--satispay-gray-600);
+  font-size: 18px;
+}
+
+.wallet-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.wallet-btn {
+  padding: 12px 32px;
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid var(--satispay-orange);
+}
+
+.wallet-btn.primary {
+  background: var(--satispay-orange);
+  color: var(--satispay-white);
+}
+
+.wallet-btn.primary:hover {
+  background: var(--satispay-orange-dark);
+}
+
+.wallet-btn.secondary {
+  background: transparent;
+  color: var(--satispay-orange);
+}
+
+.wallet-btn.secondary:hover {
+  background: var(--satispay-orange);
+  color: var(--satispay-white);
+}

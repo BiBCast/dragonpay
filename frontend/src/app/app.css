@@ -1,0 +1,147 @@
+:host {
+  --satispay-orange: #FF7900;
+  --satispay-orange-light: #FFB366;
+  --satispay-orange-dark: #E66A00;
+  --satispay-gray-50: #FAFAFA;
+  --satispay-gray-100: #F5F5F5;
+  --satispay-gray-200: #EEEEEE;
+  --satispay-gray-300: #E0E0E0;
+  --satispay-gray-400: #BDBDBD;
+  --satispay-gray-500: #9E9E9E;
+  --satispay-gray-600: #757575;
+  --satispay-gray-700: #616161;
+  --satispay-gray-800: #424242;
+  --satispay-gray-900: #212121;
+  --satispay-white: #FFFFFF;
+  --satispay-success: #4CAF50;
+  --satispay-error: #F44336;
+  --satispay-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --satispay-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --satispay-border-radius: 12px;
+  --satispay-border-radius-sm: 8px;
+}
+
+.page-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--satispay-gray-900);
+  margin: 0 0 8px 0;
+}
+
+.page-subtitle {
+  font-size: 18px;
+  color: var(--satispay-gray-600);
+  margin: 0;
+}
+
+.content-card {
+  background: var(--satispay-white);
+  padding: 32px;
+  border-radius: var(--satispay-border-radius);
+  box-shadow: var(--satispay-shadow);
+  border: 1px solid var(--satispay-gray-200);
+}
+
+/* Profile Specific Styles */
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.profile-avatar {
+  text-align: center;
+}
+
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--satispay-orange), var(--satispay-orange-light));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--satispay-white);
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.change-avatar-btn {
+  background: transparent;
+  border: 2px solid var(--satispay-orange);
+  color: var(--satispay-orange);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.change-avatar-btn:hover {
+  background: var(--satispay-orange);
+  color: var(--satispay-white);
+}
+
+.profile-info h2 {
+  font-size: 24px;
+  color: var(--satispay-gray-900);
+  margin: 0 0 8px 0;
+}
+
+.profile-info p {
+  color: var(--satispay-gray-600);
+  margin: 0 0 12px 0;
+}
+
+.verified-badge {
+  background: var(--satispay-success);
+  color: var(--satispay-white);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 24px;
+  }
+  
+  .page-subtitle {
+    font-size: 16px;
+  }
+  
+  .content-card {
+    padding: 20px;
+  }
+  
+  .profile-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .wallet-actions {
+    flex-direction: column;
+  }
+  
+  .transactions-filters {
+    justify-content: center;
+  }
+  
+  .balance-amount {
+    font-size: 36px;
+  }
+}

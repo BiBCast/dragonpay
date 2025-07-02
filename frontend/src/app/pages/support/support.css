@@ -1,0 +1,44 @@
+/* Support Specific Styles */
+.support-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.support-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--satispay-gray-50);
+  border-radius: var(--satispay-border-radius-sm);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.support-item:hover {
+  background: var(--satispay-gray-100);
+  transform: translateY(-2px);
+}
+
+.support-icon {
+  font-size: 32px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--satispay-white);
+  border-radius: 50%;
+}
+
+.support-content h3 {
+  color: var(--satispay-gray-900);
+  margin: 0 0 4px 0;
+  font-size: 18px;
+}
+
+.support-content p {
+  color: var(--satispay-gray-600);
+  margin: 0;
+}

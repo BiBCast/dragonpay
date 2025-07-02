@@ -1,13 +1,19 @@
-<div class="wallet">
-  <button>Logout</button>
-  <div *ngIf="items">
-    @for (item of items; track item.user_id) {
-    <h2>{{ item.user_id }}</h2>
-    <p>Balance: €{{ item.balance }}</p>
-    } @empty {
-    <li>There are no items.</li>
-    }
-    <!-- <h2>{{ account.holder }}</h2>
-        <p>Balance: €{{ account.balance }}</p> -->
+<!-- wallet.component.html -->
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">💰 Wallet</h1>
+    <p class="page-subtitle">Manage your balance and payment methods</p>
+  </div>
+  
+  <div class="content-card">
+    <div class="wallet-balance">
+      <div class="balance-amount">€1,234.56</div>
+      <div class="balance-label">Available Balance</div>
+    </div>
+    
+    <div class="wallet-actions">
+      <button class="wallet-btn primary">Add Money</button>
+      <button class="wallet-btn secondary">Send Money</button>
+    </div>
   </div>
 </div>

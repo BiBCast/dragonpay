@@ -1,0 +1,61 @@
+/* Profile Specific Styles */
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.profile-avatar {
+  text-align: center;
+}
+
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--satispay-orange), var(--satispay-orange-light));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--satispay-white);
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.change-avatar-btn {
+  background: transparent;
+  border: 2px solid var(--satispay-orange);
+  color: var(--satispay-orange);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.change-avatar-btn:hover {
+  background: var(--satispay-orange);
+  color: var(--satispay-white);
+}
+
+.profile-info h2 {
+  font-size: 24px;
+  color: var(--satispay-gray-900);
+  margin: 0 0 8px 0;
+}
+
+.profile-info p {
+  color: var(--satispay-gray-600);
+  margin: 0 0 12px 0;
+}
+
+.verified-badge {
+  background: var(--satispay-success);
+  color: var(--satispay-white);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+}
