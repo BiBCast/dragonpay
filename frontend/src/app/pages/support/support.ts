@@ -1,12 +1,12 @@
-// profile.ts
+// support.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
-  selector: 'app-profile',
+  selector: 'app-support',
   imports: [CommonModule],
-  templateUrl: './profile.html',
-  styleUrl: './profile.css',
+  templateUrl: './support.html',
+  styleUrl: './support.css',
 })
-export class ProfileComponent {}
+export class SupportComponent {}
