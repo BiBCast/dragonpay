@@ -1,1 +1,29 @@
-<p>login works!</p>
+<div class="satispay-login-container">
+  <div class="satispay-logo">
+    <img src="/images/Logo_di_Satispay.svg.png" alt="Satispay Logo" />
+  </div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="satispay-login-form">
+    <h2>Accedi a Satispay</h2>
+    <div class="input-group">
+      <input
+        formControlName="username"
+        placeholder="Numero di telefono o username"
+        required
+      />
+    </div>
+    <div class="input-group">
+      <input
+        formControlName="password"
+        type="password"
+        placeholder="Password"
+        required
+      />
+    </div>
+    <button type="submit" class="satispay-btn">Accedi</button>
+    <div class="satispay-links">
+      <a href="#" tabindex="-1">Hai dimenticato la password?</a>
+      <a href="#" tabindex="-1">Non hai un account? Registrati</a>
+    </div>
+    <div *ngIf="errorMsg" class="error-msg">{{ errorMsg }}</div>
+  </form>
+</div>

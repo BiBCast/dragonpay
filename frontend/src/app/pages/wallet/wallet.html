@@ -1,1 +1,13 @@
-<p>wallet works!</p>
+<div class="wallet">
+  <button (click)="logout()">Logout</button>
+  <div *ngIf="items">
+    @for (item of items; track item.user_id) {
+    <h2>{{ item.user_id }}</h2>
+    <p>Balance: €{{ item.balance }}</p>
+    } @empty {
+    <li>There are no items.</li>
+    }
+    <!-- <h2>{{ account.holder }}</h2>
+        <p>Balance: €{{ account.balance }}</p> -->
+  </div>
+</div>

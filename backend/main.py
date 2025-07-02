@@ -1,5 +1,3 @@
-# backend/main.py
-#Bearer WQwNzFmIiwiZXhwIjoxNzUxMDEzNjk1fQ...
 import os
 import sqlite3
 import uuid
@@ -32,52 +30,83 @@ api = Api(
     version='1.0',
     title='Mock Satispay API',
     description='API RESTful con Swagger UI per Satispay simulation',
-    doc='/docs',  # Swagger UI path
+    doc='/docs',
     authorizations=authorizations,
     security='BearerAuth'
 )
 
-# --- Models for Swagger ---
+# --- Models ---
 login_model = api.model('Login', {
-    'username': fields.String(required=True, description="Username dell'utente"),
-    'password': fields.String(required=True, description='Password in chiaro')
-})
-account_model = api.model('Account', {
-    'id': fields.String(description='ID del conto'),
-    'holder': fields.String(description='Nome del titolare'),
-    'balance': fields.Float(description='Saldo attuale')
-})
-transaction_model = api.model('Transaction', {
-    'id': fields.String(description='ID operazione'),
-    'date': fields.String(description='Timestamp ISO della transazione'),
-    'amount': fields.Float(description='Importo'),
-    'description': fields.String(description='Descrizione')
-})
-transfer_model = api.model('Transfer', {
-    'to_account': fields.String(required=True, description='Account di destinazione'),
-    'amount': fields.Float(required=True, description='Importo del bonifico')
-})
-transfer_response = api.inherit('TransferResponse', transfer_model, {
-    'status': fields.String(description='Status operazione'),
-    'transaction': fields.Nested(transaction_model),
-    'new_balance': fields.Float(description='Nuovo saldo')
+    'username': fields.String(required=True),
+    'password': fields.String(required=True)
 })
 
-# --- Database helper ---
+user_model = api.model('User', {
+    'id': fields.Integer,
+    'username': fields.String,
+    'full_name': fields.String,
+    'email': fields.String,
+    'created_at': fields.String
+})
+
+account_model = api.model('Account', {
+    'id': fields.String,
+    'user_id': fields.Integer,
+    'balance': fields.Float,
+    'currency': fields.String,
+    'created_at': fields.String
+})
+
+merchant_model = api.model('Merchant', {
+    'id': fields.Integer,
+    'name': fields.String,
+    'merchant_code': fields.String,
+    'created_at': fields.String
+})
+
+contact_model = api.model('Contact', {
+    'id': fields.Integer,
+    'owner_id': fields.Integer,
+    'contact_id': fields.Integer,
+    'nickname': fields.String,
+    'added_at': fields.String
+})
+
+transaction_model = api.model('Transaction', {
+    'id': fields.String,
+    'account_id': fields.String,
+    'amount': fields.Float,
+    'currency': fields.String,
+    'type': fields.String,
+    'status': fields.String,
+    'related_id': fields.String,
+    'description': fields.String,
+    'created_at': fields.String
+})
+
+payment_request_model = api.model('PaymentRequest', {
+    'id': fields.String,
+    'requester_id': fields.Integer,
+    'requestee_id': fields.Integer,
+    'amount': fields.Float,
+    'currency': fields.String,
+    'message': fields.String,
+    'status': fields.String,
+    'created_at': fields.String,
+    'expires_at': fields.String
+})
+
+# --- DB Helper ---
 DB_PATH = './satispay.db'
 
 def get_db_connection():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
-    # Enable SQL query logging
     if app.debug:
-        def trace_callback(statement):
-            print(f"[SQL] {statement}")
-        conn.set_trace_callback(trace_callback)
+        conn.set_trace_callback(lambda stmt: print(f"[SQL] {stmt}"))
     return conn
 
-
-
+# --- Init DB ---
 def init_db2():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -99,134 +128,55 @@ def init_db2():
             pw_hash = generate_password_hash(user["username"])
             cur.execute("UPDATE  users SET password_hash = ? WHERE username = ?",
                         (pw_hash, user["username"]))
-            user_id = user["id"]
-            acct_id = f'WALLET-{user["username"]}-{user_id}'
-            cur.execute("INSERT INTO accounts (id, holder, balance, user_id) VALUES (?, ?, ?, ?)",
-                        (acct_id, user["full_name"], 1000.0, user_id))
         conn.commit()
         conn.close()
     
     
 init_db2()
 
+
 # --- Namespaces ---
 auth_ns = api.namespace('auth', description='Autenticazione')
 wallet_ns = api.namespace('wallet', description='Gestione conto')
+users_ns = api.namespace('users', description='Gestione utenti')
+merch_ns = api.namespace('merchants', description='Gestione merchant')
+contacts_ns = api.namespace('contacts', description='Gestione contatti')
 tx_ns = api.namespace('transactions', description='Transazioni')
+req_ns = api.namespace('requests', description='Payment requests')
 
-# --- Auth Endpoints ---
+# --- Auth ---
 @auth_ns.route('/login')
 class Login(Resource):
     @auth_ns.expect(login_model)
-    @auth_ns.response(200, 'Success', model=api.model('Token', {'access_token': fields.String()}))
-    @auth_ns.response(401, 'Unauthorized')
     def post(self):
-        """Login e genera JWT"""
-        data = request.get_json()
-        if not data:
-            api.abort(400, 'Missing JSON in request')
+        data = request.get_json() or {}
         username = data.get('username')
-        password = data.get('password')
+        password = data.get('password') or ""
         conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM users WHERE username = ?", (username,))
-        row = cur.fetchone()
+        row = conn.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
         conn.close()
+        print(f"[DEBUG] Login attempt for user: {username}")
         if row and check_password_hash(row['password_hash'], password):
-            token = create_access_token(identity=username)
-            return {'access_token': token}, 200
-        api.abort(401, 'Bad username or password')
+            token = create_access_token(identity=str(row["id"]), expires_delta=timedelta(days=60))    
+            return {'access_token': token}
+        api.abort(401, 'Bad credentials')
 
-# --- Wallet Endpoints ---
-@wallet_ns.route('')
-class Wallet(Resource):
+# --- Users ---
+@users_ns.route('')
+class UsersList(Resource):
     @jwt_required()
-    @wallet_ns.doc(security='BearerAuth')
-    @wallet_ns.marshal_with(account_model)
+    @users_ns.marshal_list_with(user_model)
     def get(self):
-        """Restituisce il conto dell'utente"""
-        user = get_jwt_identity()
         conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute(
-            "SELECT * FROM accounts a JOIN users u"
-            " ON a.user_id = u.id WHERE u.username = ?", (user,)
-        )
-        row = cur.fetchone()
+        rows = conn.execute(
+            "SELECT id, username, full_name, email, created_at FROM users"
+        ).fetchall()
         conn.close()
-        if not row:
-            api.abort(404, 'Account not found')
-        return {'id': row['id'], 'holder': row['holder'], 'balance': row['balance']}
-
-# --- Transactions Endpoints ---
-@tx_ns.route('')
-class Transactions(Resource):
-    @jwt_required()
-    @tx_ns.doc(security='BearerAuth')
-    @tx_ns.marshal_list_with(transaction_model)
-    def get(self):
-        """Elenco transazioni dell'utente"""
-        user = get_jwt_identity()
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute(
-            "SELECT a.id FROM accounts a JOIN users u ON a.user_id = u.id WHERE u.username = ?", (user,)
-        )
-        acct = cur.fetchone()
-        if not acct:
-            conn.close()
-            api.abort(404, 'Account not found')
-        cur.execute(
-            "SELECT * FROM transactions WHERE account_id = ? ORDER BY date DESC", (acct['id'],)
-        )
-        rows = cur.fetchall()
-        conn.close()
-        return [{'id': r['id'], 'date': r['date'], 'amount': r['amount'], 'description': r['description']} for r in rows]
-
-@tx_ns.route('/transfer')
-class Transfer(Resource):
-    @jwt_required()
-    @tx_ns.doc(security='BearerAuth')
-    @tx_ns.expect(transfer_model)
-    @tx_ns.marshal_with(transfer_response)
-    def post(self):
-        """Esegue un bonifico interno"""
-        data = request.get_json()
-        if not data:
-            api.abort(400, 'Missing JSON in request')
-        to_acc = data.get('to_account')
-        amount = data.get('amount')
-        if amount is None or amount <= 0:
-            api.abort(400, 'Invalid amount')
-        user = get_jwt_identity()
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute(
-            "SELECT a.id, a.balance FROM accounts a JOIN users u ON a.user_id = u.id WHERE u.username = ?", (user,)
-        )
-        acct = cur.fetchone()
-        if not acct or amount > acct['balance']:
-            conn.close()
-            api.abort(400, 'Insufficient balance')
-        new_bal = acct['balance'] - amount
-        cur.execute("UPDATE accounts SET balance = ? WHERE id = ?", (new_bal, acct['id']))
-        tx_id = str(uuid.uuid4())
-        date = datetime.now(timezone.utc).isoformat()
-        cur.execute(
-            "INSERT INTO transactions (id, date, amount, description, account_id) VALUES (?, ?, ?, ?, ?)",
-            (tx_id, date, -amount, f'P2P to {to_acc}', acct['id'])
-        )
-        conn.commit()
-        conn.close()
-        return {
-            'status': 'success',
-            'transaction': {'id': tx_id, 'date': date, 'amount': -amount, 'description': f'P2P to {to_acc}'},
-            'new_balance': new_bal
-        }
+        # Return plain rows so Flask‑RESTX can marshal them:
+        return rows
 
 
 @wallet_ns.route('/test')
-
 class WalletTest(Resource):
     @jwt_required()
     @wallet_ns.doc(security='BearerAuth')
@@ -245,14 +195,79 @@ class WalletTest(Resource):
         if not rows:
             api.abort(404, 'Account not found')
         return rows
+# --- Wallet ---
+@wallet_ns.route('')
+class Wallet(Resource):
+    @jwt_required()
+    @wallet_ns.marshal_list_with(account_model)
+    def get(self):
+        user_id = get_jwt_identity()
+        print(f"[DEBUG] Fetching accounts for user ID: {user_id}")
+        conn = get_db_connection()
+        rows = conn.execute("SELECT * FROM accounts WHERE user_id = ?", (user_id,)).fetchall()
+        conn.close()
+        return rows
 
-# --- Health Endpoint ---
+# --- Merchants ---
+@merch_ns.route('')
+class MerchList(Resource):
+    @jwt_required()
+    @merch_ns.marshal_list_with(merchant_model)
+    def get(self):
+        conn = get_db_connection()
+        rows = conn.execute("SELECT * FROM merchants").fetchall()
+        conn.close()
+        return rows
+
+# --- Contacts ---
+@contacts_ns.route('')
+class ContactsList(Resource):
+    @jwt_required()
+    @contacts_ns.marshal_list_with(contact_model)
+    def get(self):
+        user_id = get_jwt_identity()
+        conn = get_db_connection()
+        rows = conn.execute("SELECT * FROM contacts WHERE owner_id = ?", (user_id,)).fetchall()
+        conn.close()
+        return rows
+
+# --- Transactions ---
+@tx_ns.route('')
+class Transactions(Resource):
+    @jwt_required()
+    @tx_ns.marshal_list_with(transaction_model)
+    def get(self):
+        user_id = get_jwt_identity()
+        conn = get_db_connection()
+        acct = conn.execute("SELECT id FROM accounts WHERE user_id = ?", (user_id,)).fetchone()
+        if not acct:
+            api.abort(404, 'Account not found')
+        rows = conn.execute(
+            "SELECT * FROM transactions WHERE account_id = ? ORDER BY created_at DESC", (acct['id'],)
+        ).fetchall()
+        conn.close()
+        return rows
+
+# --- Payment Requests ---
+@req_ns.route('')
+class ReqList(Resource):
+    @jwt_required()
+    @req_ns.marshal_list_with(payment_request_model)
+    def get(self):
+        user_id = get_jwt_identity()
+        conn = get_db_connection()
+        rows = conn.execute(
+            "SELECT * FROM payment_requests WHERE requester_id = ? OR requestee_id = ?",
+            (user_id, user_id)
+        ).fetchall()
+        conn.close()
+        return rows
+
+# --- Health ---
 @api.route('/hello')
 class Hello(Resource):
     def get(self):
-        """Endpoint di health-check"""
         return {'message': 'Hello, world!'}
 
-# --- Run Server ---
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=8000)

@@ -1,0 +1,90 @@
+.satispay-login-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #f7f7f7;
+}
+.satispay-logo {
+  margin-bottom: 24px;
+}
+.satispay-logo img {
+  width: 120px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.satispay-login-form {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  padding: 32px 24px 24px 24px;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.satispay-login-form h2 {
+  text-align: center;
+  margin-bottom: 8px;
+  color: #e41e26;
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.satispay-login-form input {
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+.satispay-login-form input:focus {
+  border: 1.5px solid #e41e26;
+}
+.satispay-btn {
+  background: #e41e26;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+.satispay-btn:hover {
+  background: #b81a1f;
+}
+.satispay-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  text-align: center;
+}
+.satispay-links a {
+  color: #e41e26;
+  text-decoration: none;
+  font-size: 0.95rem;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+.satispay-links a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+.error-msg {
+  color: #e41e26;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 0.98rem;
+}

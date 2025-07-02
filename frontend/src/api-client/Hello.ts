@@ -20,7 +20,6 @@ export class Hello<
    *
    * @tags default
    * @name GetHello
-   * @summary Endpoint di health-check
    * @request GET:/hello
    * @secure
    */

@@ -2,33 +2,15 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth.services';
+import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-login-page',
-  imports: [ReactiveFormsModule],
-  template: `
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
-      <input formControlName="username" placeholder="Username" required />
-      <input
-        formControlName="password"
-        type="password"
-        placeholder="Password"
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
-  `,
-  styles: [
-    `
-      .login-form {
-        max-width: 300px;
-        margin: auto;
-      }
-    `,
-  ],
+  imports: [ReactiveFormsModule, CommonModule],
+  templateUrl: './login.html',
+  styleUrl: './login.css',
 })
-// ...existing code...
 export class LoginPageComponent {
   form = new FormGroup({
     username: new FormControl(''),

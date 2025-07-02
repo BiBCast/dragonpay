@@ -21,12 +21,11 @@ export class Wallet<
    *
    * @tags wallet
    * @name GetWallet
-   * @summary Restituisce il conto dell'utente
    * @request GET:/wallet
    * @secure
    */
   getWallet = (params: RequestParams = {}) =>
-    this.request<Account, any>({
+    this.request<Account[], any>({
       path: `/wallet`,
       method: "GET",
       secure: true,

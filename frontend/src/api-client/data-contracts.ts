@@ -11,47 +11,61 @@
  */
 
 export interface Login {
-  /** Username dell'utente */
   username: string;
-  /** Password in chiaro */
   password: string;
 }
 
-export interface Token {
-  access_token?: string;
+export interface Account {
+  id?: string;
+  user_id?: number;
+  balance?: number;
+  currency?: string;
+  created_at?: string;
 }
 
-export interface Account {
-  /** ID del conto */
-  id?: string;
-  /** Nome del titolare */
-  holder?: string;
-  /** Saldo attuale */
-  balance?: number;
+export interface User {
+  id?: number;
+  username?: string;
+  full_name?: string;
+  email?: string;
+  created_at?: string;
+}
+
+export interface Merchant {
+  id?: number;
+  name?: string;
+  merchant_code?: string;
+  created_at?: string;
+}
+
+export interface Contact {
+  id?: number;
+  owner_id?: number;
+  contact_id?: number;
+  nickname?: string;
+  added_at?: string;
 }
 
 export interface Transaction {
-  /** ID operazione */
   id?: string;
-  /** Timestamp ISO della transazione */
-  date?: string;
-  /** Importo */
+  account_id?: string;
   amount?: number;
-  /** Descrizione */
-  description?: string;
-}
-
-export interface Transfer {
-  /** Account di destinazione */
-  to_account: string;
-  /** Importo del bonifico */
-  amount: number;
-}
-
-export type TransferResponse = Transfer & {
-  /** Status operazione */
+  currency?: string;
+  type?: string;
   status?: string;
-  transaction?: Transaction;
-  /** Nuovo saldo */
-  new_balance?: number;
-};
+  related_id?: string;
+  description?: string;
+  created_at?: string;
+}
+
+export interface PaymentRequest {
+  id?: string;
+  requester_id?: number;
+  requestee_id?: number;
+  amount?: number;
+  currency?: string;
+  message?: string;
+  status?: string;
+  created_at?: string;
+  expires_at?: string;
+}
