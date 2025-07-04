@@ -65,7 +65,7 @@ import { FormsModule } from '@angular/forms';
       </form>
     </div>
   `,
-  styleUrls: ['./wallet-modal.component.css'],
+  styleUrls: ['./wallet-modal.css'],
 })
 export class WalletModalComponent {
   @Input() show = false;

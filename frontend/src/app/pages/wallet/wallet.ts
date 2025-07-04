@@ -3,34 +3,62 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { WalletModalComponent } from './wallet-modal.component';
+import { WalletModalComponent } from './add-money-modal';
+import { SendMoneyModalComponent } from './send-money-modal';
 
 @Component({
   standalone: true,
   selector: 'app-wallet',
-  imports: [CommonModule, FormsModule, WalletModalComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    WalletModalComponent,
+    SendMoneyModalComponent,
+  ],
   templateUrl: './wallet.html',
   styleUrl: './wallet.css',
 })
 export class WalletComponent {
-  showModal = false;
+  showAddMoneyModal = false;
+  showSendMoneyModal = false;
   balance = 0;
   currency = 'EUR';
 
   constructor(private http: HttpClient) {}
 
-  openModal() {
-    this.showModal = true;
+  openAddMoneyModal() {
+    this.showAddMoneyModal = true;
   }
-  closeModal() {
-    this.showModal = false;
+  closeAddMoneyModal() {
+    this.showAddMoneyModal = false;
+  }
+  openSendMoneyModal() {
+    this.showSendMoneyModal = true;
+  }
+  closeSendMoneyModal() {
+    this.showSendMoneyModal = false;
   }
 
   addMoney(event: { amount: number; currency: string }) {
     // POST to backend (replace URL with your endpoint)
     this.http.post('/wallet/topup', event).subscribe({
       next: () => {
-        this.closeModal();
+        this.closeAddMoneyModal();
+        // Optionally refresh balance here
+      },
+      error: (err) => {
+        alert(
+          'Failed to add money: ' + (err?.error?.message || err.statusText)
+        );
+      },
+    });
+  }
+
+  sendMoney(event: { contact: string; amount: number; currency: string }) {
+    // POST to backend (replace URL with your endpoint)
+    this.http.post('/wallet/topup', event).subscribe({
+      next: () => {
+        this.closeSendMoneyModal();
         // Optionally refresh balance here
       },
       error: (err) => {

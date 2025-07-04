@@ -12,15 +12,23 @@
     </div>
 
     <div class="wallet-actions">
-      <button class="wallet-btn primary" (click)="openModal()">
+      <button class="wallet-btn primary" (click)="openAddMoneyModal()">
         Add Money
       </button>
-      <button class="wallet-btn secondary">Send Money</button>
+      <button class="wallet-btn secondary" (click)="openSendMoneyModal()">
+        Send Money
+      </button>
     </div>
 
+    <app-send-money-modal
+      *ngIf="showSendMoneyModal"
+      (close)="closeSendMoneyModal()"
+      (send)="sendMoney($event)"
+    ></app-send-money-modal>
+
     <app-wallet-modal
-      *ngIf="showModal"
-      (close)="closeModal()"
+      *ngIf="showAddMoneyModal"
+      (close)="closeAddMoneyModal()"
       (add)="addMoney($event)"
     ></app-wallet-modal>
   </div>

@@ -79,8 +79,7 @@ export class HomeComponent implements OnInit {
   quickActions = [
     { title: 'Send Money', icon: '📤', action: 'send' },
     { title: 'Request Money', icon: '📥', action: 'request' },
-    { title: 'Pay Bills', icon: '🧾', action: 'bills' },
-    { title: 'Top Up', icon: '💸', action: 'topup' },
+    { title: 'Wallet', icon: '💸', action: 'topup' },
   ];
 
   ngOnInit() {
