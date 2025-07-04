@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import {
   Account,
   Merchant,
@@ -18,7 +19,7 @@ import { SendMoneyModalComponent } from '../wallet/send-money-modal';
   styleUrl: './home.css',
 })
 export class HomeComponent implements OnInit {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
   stats = [
     {
       title: 'Total Balance',
@@ -126,9 +127,10 @@ export class HomeComponent implements OnInit {
     // Implement quick action logic
   }
 
-  viewAllTransactions() {
+  toTransactions() {
     console.log('View all transactions');
     // Navigate to transactions page
+    this.router.navigate(['/home/transactions']);
   }
 
   getCurrentDate(): string {
@@ -158,6 +160,14 @@ export class HomeComponent implements OnInit {
   openSendMoneyModal(merchant: Merchant) {
     this.selectedMerchant = merchant;
     this.showSendMoneyModal = true;
+  }
+
+  onStatsGridClick() {
+    this.router.navigate(['/home/wallet']);
+  }
+
+  toMerchants() {
+    this.router.navigate(['/home/merchants']);
   }
   closeSendMoneyModal() {
     this.showSendMoneyModal = false;

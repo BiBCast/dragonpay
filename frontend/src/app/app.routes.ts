@@ -10,6 +10,7 @@ import { SettingsComponent } from './pages/settings/settings';
 import { SupportComponent } from './pages/support/support';
 import { MessagesComponent } from './pages/messages/messages';
 import { ReportsComponent } from './pages/reports/reports';
+import { MerchantsComponent } from './pages/merchants/merchants';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -27,6 +28,8 @@ export const routes: Routes = [
       { path: 'settings', component: SettingsComponent },
       { path: 'messages', component: MessagesComponent },
       { path: 'support', component: SupportComponent },
+      { path: 'merchants', component: MerchantsComponent },
+      { path: 'requests', component: MerchantsComponent },
     ],
   },
   { path: '**', redirectTo: '/login' },

@@ -1,0 +1,54 @@
+.merchants-section {
+  margin-bottom: 32px;
+}
+
+.merchants-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.merchant-item {
+  background: var(--satispay-white);
+  border: 2px solid var(--satispay-gray-200);
+  border-radius: var(--satispay-border-radius);
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: var(--satispay-shadow);
+}
+
+.merchant-item:hover {
+  border-color: var(--satispay-orange);
+  background: linear-gradient(
+    135deg,
+    var(--satispay-orange),
+    var(--satispay-orange-light)
+  );
+  color: var(--satispay-white);
+  transform: translateY(-2px);
+  box-shadow: var(--satispay-shadow-lg);
+}
+
+.merchant-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--satispay-gray-900);
+  margin-bottom: 4px;
+}
+
+.merchant-item:hover .merchant-name {
+  color: var(--satispay-white);
+}
+
+.merchant-code {
+  font-size: 14px;
+  color: var(--satispay-gray-500);
+}
+
+.merchant-item:hover .merchant-code {
+  color: var(--satispay-white);
+}

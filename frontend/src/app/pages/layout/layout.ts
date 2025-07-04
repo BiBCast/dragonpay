@@ -1,5 +1,6 @@
 // main-layout.ts
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterModule } from '@angular/router';
 import { AuthService } from '../../auth.services';
@@ -13,8 +14,8 @@ import { AuthService } from '../../auth.services';
 })
 export class MainLayoutComponent {
   isSidebarCollapsed = false;
-
-  auth = inject(AuthService);
+  private auth = inject(AuthService);
+  private router = inject(Router);
   user$ = this.auth.getUserProfile(); // Observable<User | null>
 
   logout() {
@@ -22,5 +23,12 @@ export class MainLayoutComponent {
   }
   toggleSidebar() {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  }
+
+  goToProfile() {
+    this.router.navigate(['home/profile']);
+  }
+  onDashbord() {
+    this.router.navigate(['home/dashboard']);
   }
 }

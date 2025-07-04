@@ -9,14 +9,14 @@
           <span class="hamburger-line"></span>
           <span class="hamburger-line"></span>
         </button>
-        <div class="logo">
+        <div class="logo" (click)="onDashbord()" style="cursor: pointer">
           <div class="logo-icon">S</div>
           <h1 class="logo-text">Satispay</h1>
         </div>
       </div>
 
       <nav class="header-nav">
-        <button class="nav-button profile-btn">
+        <button class="nav-button profile-btn" (click)="goToProfile()">
           <span class="nav-icon">👤</span>
           <span class="nav-text">Profile</span>
         </button>
@@ -54,14 +54,6 @@
           <span class="nav-label">Profile</span>
         </a>
 
-        <!-- <a
-          routerLink="/home/messages"
-          routerLinkActive="active"
-          class="nav-link"
-        >
-          <span class="nav-icon">💬</span>
-          <span class="nav-label">Messages</span>
-        </a> -->
         <a routerLink="/home/wallet" routerLinkActive="active" class="nav-link">
           <span class="nav-icon">💰</span>
           <span class="nav-label">Wallet</span>
@@ -74,22 +66,22 @@
           <span class="nav-icon">💸</span>
           <span class="nav-label">Transactions</span>
         </a>
-        <!-- <a
-          routerLink="/home/report"
+        <a
+          routerLink="/home/merchants"
           routerLinkActive="active"
           class="nav-link"
         >
-          <span class="nav-icon">📑</span>
-          <span class="nav-label">Reports</span>
-        </a> -->
-        <!-- <a
-          routerLink="/home/support"
+          <span class="nav-icon">🏪</span
+          ><span class="nav-label">Merchants</span>
+        </a>
+        <a
+          routerLink="/home/requests"
           routerLinkActive="active"
           class="nav-link"
         >
-          <span class="nav-icon">🆘</span>
-          <span class="nav-label">Support</span>
-        </a> -->
+          <span class="nav-icon">📝</span
+          ><span class="nav-label">requests</span>
+        </a>
         <a
           routerLink="/home/settings"
           routerLinkActive="active"

@@ -1,0 +1,20 @@
+<div class="merchants-section">
+  <h2 class="section-title">Merchants</h2>
+  <div class="merchants-list">
+    <div
+      class="merchant-item"
+      *ngFor="let merchant of merchants"
+      (click)="openSendMoneyModal(merchant)"
+    >
+      <div class="merchant-name">{{ merchant.name }}</div>
+      <div class="merchant-code">{{ merchant.merchant_code }}</div>
+    </div>
+  </div>
+
+  <app-send-money-modal
+    *ngIf="showSendMoneyModal"
+    [contact]="selectedMerchant?.name ?? ''"
+    (close)="closeSendMoneyModal()"
+    (send)="sendMoneyToMerchant($event)"
+  ></app-send-money-modal>
+</div>
