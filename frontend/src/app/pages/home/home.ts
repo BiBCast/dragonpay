@@ -2,13 +2,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Account, Transaction } from '../../../api-client/data-contracts';
+import {
+  Account,
+  Merchant,
+  Transaction,
+} from '../../../api-client/data-contracts';
 import { getTransactionIcon } from '../../utils';
+import { SendMoneyModalComponent } from '../wallet/send-money-modal';
 
 @Component({
   standalone: true,
   selector: 'app-home',
-  imports: [CommonModule],
+  imports: [CommonModule, SendMoneyModalComponent],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -82,6 +87,10 @@ export class HomeComponent implements OnInit {
     { title: 'Wallet', icon: '💸', action: 'topup' },
   ];
 
+  merchants: Merchant[] = [];
+  showSendMoneyModal = false;
+  selectedMerchant: Merchant | null = null;
+
   ngOnInit() {
     this.getWallet().subscribe((wallet) => {
       // Example: populate stats from wallet
@@ -95,6 +104,10 @@ export class HomeComponent implements OnInit {
         },
         // ...other stats as needed
       ];
+    });
+
+    this.getMerchants().subscribe((merchants) => {
+      this.merchants = merchants;
     });
 
     this.getTransactions().subscribe((transactions) => {
@@ -134,7 +147,28 @@ export class HomeComponent implements OnInit {
     return this.http.get<Transaction[]>('http://localhost:8000/transactions');
   }
 
+  getMerchants() {
+    return this.http.get<Merchant[]>('http://localhost:8000/merchants');
+  }
+
   getAbsoluteValue(amount: number): string {
     return Math.abs(amount).toFixed(2);
+  }
+
+  openSendMoneyModal(merchant: Merchant) {
+    this.selectedMerchant = merchant;
+    this.showSendMoneyModal = true;
+  }
+  closeSendMoneyModal() {
+    this.showSendMoneyModal = false;
+    this.selectedMerchant = null;
+  }
+  sendMoneyToMerchant(event: {
+    contact: string;
+    amount: number;
+    currency: string;
+  }) {
+    // POST to backend, using event and this.selectedMerchant
+    this.closeSendMoneyModal();
   }
 }

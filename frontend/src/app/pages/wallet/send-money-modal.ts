@@ -89,6 +89,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class SendMoneyModalComponent {
   @Input() show = false;
+  @Input() contact: string = '';
   @Output() close = new EventEmitter<void>();
   @Output() send = new EventEmitter<{
     contact: string;
@@ -96,7 +97,6 @@ export class SendMoneyModalComponent {
     currency: string;
   }>();
 
-  contact: string = '';
   amount: number = 0;
   currency: string = 'EUR';
 
