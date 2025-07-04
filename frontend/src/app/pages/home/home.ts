@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Account, Transaction } from '../../../api-client/data-contracts';
+import { getTransactionIcon } from '../../utils';
 
 @Component({
   standalone: true,
@@ -103,7 +104,7 @@ export class HomeComponent implements OnInit {
         merchant: tx.description ?? tx.type ?? '',
         amount: tx.amount ?? 0,
         date: tx.created_at ?? '',
-        icon: '💸', // or map to a real icon
+        icon: getTransactionIcon(tx.type),
       }));
     });
   }

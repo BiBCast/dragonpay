@@ -75,7 +75,7 @@
 }
 
 .amount.negative {
-  color: var(--satispay-gray-900);
+  color: var(--satispay-error);
 }
 
 .amount.positive {

@@ -41,11 +41,14 @@ login_model = api.model('Login', {
     'password': fields.String(required=True)
 })
 
+
+# --- Models (updated to match init.sql schema) ---
 user_model = api.model('User', {
     'id': fields.Integer,
     'username': fields.String,
     'full_name': fields.String,
     'email': fields.String,
+    'password_hash': fields.String,  # usually not sent to frontend
     'created_at': fields.String
 })
 
@@ -77,8 +80,8 @@ transaction_model = api.model('Transaction', {
     'account_id': fields.String,
     'amount': fields.Float,
     'currency': fields.String,
-    'type': fields.String,
-    'status': fields.String,
+    'type': fields.String(enum=['payment','request','topup','payout','refund']),
+    'status': fields.String(enum=['pending','completed','failed']),
     'related_id': fields.String,
     'description': fields.String,
     'created_at': fields.String
@@ -91,7 +94,7 @@ payment_request_model = api.model('PaymentRequest', {
     'amount': fields.Float,
     'currency': fields.String,
     'message': fields.String,
-    'status': fields.String,
+    'status': fields.String(enum=['pending','accepted','declined','expired']),
     'created_at': fields.String,
     'expires_at': fields.String
 })

@@ -3,23 +3,52 @@
     <h1 class="page-title">💳 Transactions</h1>
     <p class="page-subtitle">View and manage your transaction history</p>
   </div>
-  
+
   <div class="content-card">
     <div class="transactions-filters">
-      <button class="filter-btn active">All</button>
-      <button class="filter-btn">Payments</button>
-      <button class="filter-btn">Received</button>
-      <button class="filter-btn">Cashback</button>
+      <button
+        class="filter-btn"
+        [class.active]="filter === 'all'"
+        (click)="applyFilter('all')"
+      >
+        All
+      </button>
+      <button
+        class="filter-btn"
+        [class.active]="filter === 'payments'"
+        (click)="applyFilter('payments')"
+      >
+        Payments
+      </button>
+      <button
+        class="filter-btn"
+        [class.active]="filter === 'request'"
+        (click)="applyFilter('request')"
+      >
+        Request
+      </button>
+      <button
+        class="filter-btn"
+        [class.active]="filter === 'received'"
+        (click)="applyFilter('received')"
+      >
+        Received
+      </button>
     </div>
-    
+
     <div class="transactions-list">
-      <div class="transaction-item">
-        <span class="transaction-icon">☕</span>
+      <div class="transaction-item" *ngFor="let t of filteredTransactions">
+        <span class="transaction-icon">{{ t.icon }}</span>
         <div class="transaction-details">
-          <div class="merchant">Starbucks Coffee</div>
-          <div class="date">Today, 14:30</div>
+          <div class="merchant">{{ t.merchant }}</div>
+          <div class="date">{{ t.date }}</div>
         </div>
-        <div class="amount negative">-€4.50</div>
+        <div
+          class="amount"
+          [ngClass]="{ negative: t.amount < 0, positive: t.amount > 0 }"
+        >
+          {{ t.amount > 0 ? "+" : "" }}€{{ t.amount | number : "1.2-2" }}
+        </div>
       </div>
     </div>
   </div>

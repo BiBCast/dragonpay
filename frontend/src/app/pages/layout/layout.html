@@ -54,15 +54,14 @@
           <span class="nav-label">Profile</span>
         </a>
 
-
-        <a
+        <!-- <a
           routerLink="/home/messages"
           routerLinkActive="active"
           class="nav-link"
         >
           <span class="nav-icon">💬</span>
           <span class="nav-label">Messages</span>
-        </a>
+        </a> -->
         <a routerLink="/home/wallet" routerLinkActive="active" class="nav-link">
           <span class="nav-icon">💰</span>
           <span class="nav-label">Wallet</span>
@@ -75,23 +74,23 @@
           <span class="nav-icon">💸</span>
           <span class="nav-label">Transactions</span>
         </a>
-                <a
+        <!-- <a
           routerLink="/home/report"
           routerLinkActive="active"
           class="nav-link"
         >
           <span class="nav-icon">📑</span>
           <span class="nav-label">Reports</span>
-        </a>
-        <a
+        </a> -->
+        <!-- <a
           routerLink="/home/support"
           routerLinkActive="active"
           class="nav-link"
         >
           <span class="nav-icon">🆘</span>
           <span class="nav-label">Support</span>
-        </a>
-                <a
+        </a> -->
+        <a
           routerLink="/home/settings"
           routerLinkActive="active"
           class="nav-link"
@@ -101,14 +100,17 @@
         </a>
       </nav>
 
-      <!-- ...existing code... -->
       <div class="sidebar-footer">
         <div class="user-info">
-          <div class="user-avatar">
+          <a
+            class="user-avatar"
+            routerLink="/home/profile"
+            routerLinkActive="active"
+          >
             {{
               (user$ | async)?.full_name?.[0] || "U"
             }}
-          </div>
+          </a>
           <div class="user-details" *ngIf="!isSidebarCollapsed">
             <div class="user-name">
               {{ (user$ | async)?.full_name || "Utente" }}
@@ -119,7 +121,6 @@
           </div>
         </div>
       </div>
-      <!-- ...existing code... -->
     </aside>
 
     <!-- Main Content Area -->
