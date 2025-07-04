@@ -1,0 +1,63 @@
+.error {
+  color: #d32f2f;
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--satispay-white);
+  padding: 32px 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  min-width: 320px;
+}
+.modal h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.modal label {
+  display: block;
+  margin-bottom: 16px;
+}
+.modal input,
+.modal select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--satispay-gray-200);
+  font-size: 16px;
+}
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+.modal button {
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--satispay-orange);
+  color: var(--satispay-white);
+  transition: background 0.2s;
+}
+.modal button[type="button"] {
+  background: var(--satispay-gray-200);
+  color: var(--satispay-gray-900);
+}

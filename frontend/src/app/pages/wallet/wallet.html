@@ -4,16 +4,24 @@
     <h1 class="page-title">💰 Wallet</h1>
     <p class="page-subtitle">Manage your balance and payment methods</p>
   </div>
-  
+
   <div class="content-card">
     <div class="wallet-balance">
-      <div class="balance-amount">€1,234.56</div>
+      <div class="balance-amount">€{{ balance | number : "1.2-2" }}</div>
       <div class="balance-label">Available Balance</div>
     </div>
-    
+
     <div class="wallet-actions">
-      <button class="wallet-btn primary">Add Money</button>
+      <button class="wallet-btn primary" (click)="openModal()">
+        Add Money
+      </button>
       <button class="wallet-btn secondary">Send Money</button>
     </div>
+
+    <app-wallet-modal
+      *ngIf="showModal"
+      (close)="closeModal()"
+      (add)="addMoney($event)"
+    ></app-wallet-modal>
   </div>
 </div>
