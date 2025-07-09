@@ -204,12 +204,12 @@ class WalletTest(Resource):
 @wallet_ns.route('')
 class Wallet(Resource):
     @jwt_required()
-    @wallet_ns.marshal_list_with(account_model)
+    @wallet_ns.marshal_with(account_model)
     def get(self):
         user_id = get_jwt_identity()
         print(f"[DEBUG] Fetching accounts for user ID: {user_id}")
         conn = get_db_connection()
-        rows = conn.execute("SELECT * FROM accounts WHERE user_id = ?", (user_id,)).fetchall()
+        rows = conn.execute("SELECT * FROM accounts WHERE user_id = ?", (user_id,)).fetchone()
         conn.close()
         return rows
 
