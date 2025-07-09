@@ -30,7 +30,7 @@
     <app-wallet-modal
       *ngIf="showAddMoneyModal"
       (close)="closeAddMoneyModal()"
-      (add)="addMoney($event)"
+      (success)="onAddMoneySuccess()"
     ></app-wallet-modal>
   </div>
 </div>

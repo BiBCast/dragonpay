@@ -45,20 +45,10 @@ export class WalletComponent {
     this.showSendMoneyModal = false;
   }
 
-  addMoney(event: { amount: number; currency: string }) {
-    // POST to backend (replace URL with your endpoint)
-    this.http.post('http://localhost:8000/wallet/topup', event).subscribe({
-      next: () => {
-        this.closeAddMoneyModal();
-        this.refreshAccount(); // <-- refresh after top-up
-        // Optionally refresh balance here
-      },
-      error: (err) => {
-        alert(
-          'Failed to add money: ' + (err?.error?.message || err.statusText)
-        );
-      },
-    });
+  // No longer needed: addMoney(event)
+
+  onAddMoneySuccess() {
+    this.refreshAccount();
   }
 
   sendMoney(event: { contact: string; amount: number; currency: string }) {

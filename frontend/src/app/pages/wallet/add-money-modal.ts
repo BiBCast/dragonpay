@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone: true,
@@ -59,9 +60,12 @@ import { FormsModule } from '@angular/forms';
           >
         </div>
         <div class="modal-actions">
-          <button type="submit" [disabled]="!form.form.valid">Add</button>
+          <button type="submit" [disabled]="loading || !form.form.valid">
+            Add
+          </button>
           <button type="button" (click)="onClose()">Cancel</button>
         </div>
+        <div class="error" *ngIf="error">{{ error }}</div>
       </form>
     </div>
   `,
@@ -70,10 +74,14 @@ import { FormsModule } from '@angular/forms';
 export class WalletModalComponent {
   @Input() show = false;
   @Output() close = new EventEmitter<void>();
-  @Output() add = new EventEmitter<{ amount: number; currency: string }>();
+  @Output() success = new EventEmitter<{ amount: number; currency: string }>();
 
   amount: number = 0;
   currency: string = 'EUR';
+  loading = false;
+  error: string | null = null;
+
+  constructor(private http: HttpClient) {}
 
   onClose() {
     this.close.emit();
@@ -81,8 +89,25 @@ export class WalletModalComponent {
 
   submit() {
     if (this.amount > 0 && this.currency) {
-      this.add.emit({ amount: this.amount, currency: this.currency });
-      this.onClose();
+      this.loading = true;
+      this.error = null;
+      this.http
+        .post('http://localhost:8000/wallet/topup', {
+          amount: this.amount,
+          currency: this.currency,
+        })
+        .subscribe({
+          next: () => {
+            this.loading = false;
+            this.success.emit({ amount: this.amount, currency: this.currency });
+            this.onClose();
+          },
+          error: (err) => {
+            this.loading = false;
+            this.error =
+              'Failed to add money: ' + (err?.error?.message || err.statusText);
+          },
+        });
     }
   }
 }
