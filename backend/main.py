@@ -180,6 +180,22 @@ class CurrentUser(Resource):
         if not row:
             api.abort(404, 'User not found')
         return row
+# --- Current User ---
+@users_ns.route('')
+class AllUsers(Resource):
+    @jwt_required()
+    @users_ns.marshal_list_with(user_model)
+    def get(self):
+        user_id = get_jwt_identity()
+        conn = get_db_connection()
+        row = conn.execute(
+            "SELECT * FROM users "
+        ).fetchall()
+        conn.close()
+        if not row:
+            api.abort(404, 'User not found')
+        return row
+
 
 
 @wallet_ns.route('/test')
