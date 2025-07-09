@@ -1,10 +1,11 @@
 // wallet.ts
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { WalletModalComponent } from './add-money-modal';
 import { SendMoneyModalComponent } from './send-money-modal';
+import { AuthService } from '../../auth.services';
 
 @Component({
   standalone: true,
@@ -19,6 +20,8 @@ import { SendMoneyModalComponent } from './send-money-modal';
   styleUrl: './wallet.css',
 })
 export class WalletComponent {
+  private auth = inject(AuthService);
+  user$ = this.auth.getUserAccount(); // Observable<User | null>
   showAddMoneyModal = false;
   showSendMoneyModal = false;
   balance = 0;

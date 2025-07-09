@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit {
   quickActions = [
     { title: 'Send Money', icon: '📤', action: 'send' },
     { title: 'Request Money', icon: '📥', action: 'request' },
-    { title: 'Wallet', icon: '💸', action: 'topup' },
+    { title: 'Wallet', icon: '💸', action: 'wallet' },
   ];
 
   merchants: Merchant[] = [];
@@ -124,7 +124,15 @@ export class HomeComponent implements OnInit {
 
   onQuickAction(action: string) {
     console.log('Quick action:', action);
-    // Implement quick action logic
+    if (action === 'send') {
+      //this.openSendMoneyModal(this.merchants[0]); // Example: open modal for first merchant
+      
+    } else if (action === 'request') {
+      // Implement request money logic
+    } else if (action === 'wallet') {
+      this.router.navigate(['/home/wallet']);
+      // Implement top up wallet logic
+    }
   }
 
   toTransactions() {
