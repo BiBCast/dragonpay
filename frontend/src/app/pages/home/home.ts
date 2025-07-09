@@ -19,6 +19,9 @@ import { SendMoneyModalComponent } from '../wallet/send-money-modal';
   styleUrl: './home.css',
 })
 export class HomeComponent implements OnInit {
+  onAddMoneySuccess() {
+    throw new Error('Method not implemented.');
+  }
   constructor(private http: HttpClient, private router: Router) {}
   stats = [
     {
@@ -98,7 +101,7 @@ export class HomeComponent implements OnInit {
       this.stats = [
         {
           title: 'Total Balance',
-          value: wallet.length ? `€${wallet[0].balance}` : '€0.00',
+          value: wallet ? `€${wallet.balance}` : '€0.00',
           icon: '💰',
           trend: '+0%',
           trendUp: true,
@@ -126,7 +129,6 @@ export class HomeComponent implements OnInit {
     console.log('Quick action:', action);
     if (action === 'send') {
       //this.openSendMoneyModal(this.merchants[0]); // Example: open modal for first merchant
-      
     } else if (action === 'request') {
       // Implement request money logic
     } else if (action === 'wallet') {
@@ -150,7 +152,7 @@ export class HomeComponent implements OnInit {
     });
   }
   getWallet() {
-    return this.http.get<Account[]>('http://localhost:8000/wallet');
+    return this.http.get<Account>('http://localhost:8000/wallet');
   }
 
   getTransactions() {

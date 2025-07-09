@@ -12,6 +12,9 @@ import { SendMoneyModalComponent } from '../wallet/send-money-modal';
   styleUrl: './contacts.css',
 })
 export class ContactsComponent implements OnInit {
+  onAddMoneySuccess() {
+    throw new Error('Method not implemented.');
+  }
   constructor(private http: HttpClient) {}
   contacts: Contact[] = [];
   showSendMoneyModal = false;

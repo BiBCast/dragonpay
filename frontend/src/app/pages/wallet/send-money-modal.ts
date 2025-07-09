@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone: true,
@@ -19,6 +20,7 @@ import { FormsModule } from '@angular/forms';
             name="contact"
             required
             #contactInput="ngModel"
+            [readonly]="readonlyContact"
           />
         </label>
         <div
@@ -79,9 +81,12 @@ import { FormsModule } from '@angular/forms';
           >
         </div>
         <div class="modal-actions">
-          <button type="submit" [disabled]="!form.form.valid">Send</button>
+          <button type="submit" [disabled]="loading || !form.form.valid">
+            Send
+          </button>
           <button type="button" (click)="onClose()">Cancel</button>
         </div>
+        <div class="error" *ngIf="error">{{ error }}</div>
       </form>
     </div>
   `,
@@ -90,8 +95,9 @@ import { FormsModule } from '@angular/forms';
 export class SendMoneyModalComponent {
   @Input() show = false;
   @Input() contact: string = '';
+  @Input() readonlyContact = false;
   @Output() close = new EventEmitter<void>();
-  @Output() send = new EventEmitter<{
+  @Output() success = new EventEmitter<{
     contact: string;
     amount: number;
     currency: string;
@@ -99,6 +105,10 @@ export class SendMoneyModalComponent {
 
   amount: number = 0;
   currency: string = 'EUR';
+  loading = false;
+  error: string | null = null;
+
+  constructor(private http: HttpClient) {}
 
   onClose() {
     this.close.emit();
@@ -106,12 +116,31 @@ export class SendMoneyModalComponent {
 
   submit() {
     if (this.contact && this.amount > 0 && this.currency) {
-      this.send.emit({
-        contact: this.contact,
-        amount: this.amount,
-        currency: this.currency,
-      });
-      this.onClose();
+      this.loading = true;
+      this.error = null;
+      this.http
+        .post('http://localhost:8000/wallet/sendMoney', {
+          contact: this.contact,
+          amount: this.amount,
+          currency: this.currency,
+        })
+        .subscribe({
+          next: () => {
+            this.loading = false;
+            this.success.emit({
+              contact: this.contact,
+              amount: this.amount,
+              currency: this.currency,
+            });
+            this.onClose();
+          },
+          error: (err) => {
+            this.loading = false;
+            this.error =
+              'Failed to send money: ' +
+              (err?.error?.message || err.statusText);
+          },
+        });
     }
   }
 }

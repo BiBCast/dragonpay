@@ -19,6 +19,6 @@
     *ngIf="showSendMoneyModal"
     [contact]="selectedContact?.nickname || ''"
     (close)="closeSendMoneyModal()"
-    (send)="sendMoneyToContact($event)"
+    (success)="onAddMoneySuccess()"
   ></app-send-money-modal>
 </div>

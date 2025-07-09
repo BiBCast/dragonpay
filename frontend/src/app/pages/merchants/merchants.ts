@@ -12,6 +12,9 @@ import { SendMoneyModalComponent } from '../wallet/send-money-modal';
   styleUrl: './merchants.css',
 })
 export class MerchantsComponent implements OnInit {
+  onAddMoneySuccess() {
+    throw new Error('Method not implemented.');
+  }
   merchants: Merchant[] = [];
   showSendMoneyModal = false;
   selectedMerchant: Merchant | null = null;

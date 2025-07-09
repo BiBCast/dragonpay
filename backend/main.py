@@ -1,3 +1,4 @@
+
 import os
 import sqlite3
 import uuid
@@ -241,28 +242,174 @@ class TopUp(Resource):
         # Update balance
         conn.execute("UPDATE accounts SET balance = ? WHERE id = ?", (new_balance, account['id']))
         # Create transaction record
-        tx_id = str(uuid.uuid4())
-        now = datetime.now(timezone.utc).isoformat()
-        conn.execute(
-            """
-            INSERT INTO transactions (id, account_id, amount, currency, type, status, related_id, description, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                tx_id,
-                account['id'],
-                amount,
-                currency,
-                'topup',
-                'completed',
-                None,
-                'Wallet top-up',
-                now
-            )
+        create_transaction(
+            conn=conn,
+            account_id=account['id'],
+            amount=amount,
+            currency=currency,
+            tx_type='topup',
+            status='completed',
+            related_id=None,
+            description='Wallet top-up'
         )
         conn.commit()
         conn.close()
         return {'message': 'Top up successful', 'new_balance': new_balance}
+# --- Helper: Create Transaction ---
+def create_transaction(conn, account_id, amount, currency, tx_type, status, related_id, description):
+    tx_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc).isoformat()
+    conn.execute(
+        """
+        INSERT INTO transactions (id, account_id, amount, currency, type, status, related_id, description, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            tx_id,
+            account_id,
+            amount,
+            currency,
+            tx_type,
+            status,
+            related_id,
+            description,
+            now
+        )
+    )
+    return tx_id
+
+# --- Send Money ---
+@wallet_ns.route('/sendMoney')
+class SendMoney(Resource):
+    @jwt_required()
+    @wallet_ns.expect(api.model('SendMoneyRequest', {
+        'contact':  fields.String(required=True, description="Username, user ID or merchant code"),
+        'amount':   fields.Float(required=True,  description="Amount to transfer"),
+        'currency': fields.String(required=True,  description="Currency code")
+    }))
+    def post(self):
+        """Transfer money from the authenticated user to another user or to a merchant."""
+        user_id  = get_jwt_identity()
+        data     = request.get_json() or {}
+        contact  = data.get('contact')
+        amount   = data.get('amount')
+        currency = data.get('currency')
+
+        # 1️⃣ Input validation
+        if not contact or amount is None or amount <= 0 or not currency:
+            return {'message': 'Invalid input data'}, 400
+
+        db_path = os.path.join(os.path.dirname(__file__), 'satispay.db')
+        conn    = sqlite3.connect(db_path)
+        conn.row_factory = sqlite3.Row
+
+        try:
+            conn.execute('BEGIN')
+
+            # 2️⃣ Load sender and verify funds
+            sender = conn.execute(
+                "SELECT id, balance, currency FROM accounts WHERE user_id = ?",
+                (user_id,)
+            ).fetchone()
+            if not sender:
+                return {'message': 'Sender account not found'}, 404
+            if sender['currency'] != currency:
+                return {'message': 'Currency mismatch'}, 400
+            if sender['balance'] < amount:
+                return {'message': 'Insufficient funds'}, 400
+
+            # 3️⃣ Try to resolve as user
+            recipient_user = conn.execute(
+                "SELECT u.id, a.id AS acct_id, a.balance, a.currency "
+                "FROM users u JOIN accounts a ON a.user_id = u.id "
+                "WHERE u.username = ? OR u.id = ?",
+                (contact, contact)
+            ).fetchone()
+
+            if recipient_user:
+                # Standard user-to-user transfer
+                r_acct_id = recipient_user['acct_id']
+                r_balance = recipient_user['balance']
+                r_currency= recipient_user['currency']
+                r_name    = contact
+
+                if r_currency != currency:
+                    return {'message': 'Recipient currency mismatch'}, 400
+
+                # Update both sides
+                new_sender_bal = sender['balance'] - amount
+                new_recipient_bal = r_balance + amount
+                conn.execute(
+                    "UPDATE accounts SET balance = ? WHERE id = ?",
+                    (new_sender_bal, sender['id'])
+                )
+                conn.execute(
+                    "UPDATE accounts SET balance = ? WHERE id = ?",
+                    (new_recipient_bal, r_acct_id)
+                )
+
+                # Record two transactions
+                now_iso = datetime.now(timezone.utc).isoformat()
+                tx1 = create_transaction(
+                    conn, sender['id'], -amount, currency,
+                    'payment', 'completed', None,
+                    f"Sent to {r_name}"
+                )
+                tx2 = create_transaction(
+                    conn, r_acct_id, amount, currency,
+                    'payment', 'completed', tx1,
+                    f"Received from {sender['id']}"
+                )
+                # Link them
+                conn.execute(
+                    "UPDATE transactions SET related_id = ? WHERE id = ?",
+                    (tx2, tx1)
+                )
+
+            else:
+                # 4️⃣ Fallback: merchant
+                merchant = conn.execute(
+                    "SELECT id, name, merchant_code FROM merchants WHERE merchant_code = ?",
+                    (contact,)
+                ).fetchone()
+                if not merchant:
+                    return {'message': 'Recipient not found'}, 404
+
+                # Debit only the sender
+                new_sender_bal = sender['balance'] - amount
+                conn.execute(
+                    "UPDATE accounts SET balance = ? WHERE id = ?",
+                    (new_sender_bal, sender['id'])
+                )
+
+                # Record single transaction pointing at merchant_code
+                #now_iso = datetime.now(timezone.utc).isoformat()
+                create_transaction(
+                    conn,
+                    sender['id'],
+                    -amount,
+                    currency,
+                    'payment',
+                    'completed',
+                    merchant['merchant_code'],
+                    f"Payment to merchant {merchant['name']}",
+                    #now_iso
+                )
+
+            conn.commit()
+            return {
+                'message': 'Money sent successfully',
+                'new_balance': new_sender_bal
+            }, 200
+
+        except Exception as e:
+            conn.rollback()
+            api.abort(500, f'Internal error: {e}')
+
+        finally:
+            conn.close()
+
+
 # --- Merchants ---
 @merch_ns.route('')
 class MerchList(Resource):
