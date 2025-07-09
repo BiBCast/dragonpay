@@ -11,6 +11,7 @@ import { SupportComponent } from './pages/support/support';
 import { MessagesComponent } from './pages/messages/messages';
 import { ReportsComponent } from './pages/reports/reports';
 import { MerchantsComponent } from './pages/merchants/merchants';
+import { ContactsComponent } from './pages/contacts/contacts';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -30,6 +31,7 @@ export const routes: Routes = [
       { path: 'support', component: SupportComponent },
       { path: 'merchants', component: MerchantsComponent },
       { path: 'requests', component: MerchantsComponent },
+      { path: 'contacts', component: ContactsComponent },
     ],
   },
   { path: '**', redirectTo: '/login' },

@@ -1,0 +1,64 @@
+.contacts-section {
+  margin-bottom: 32px;
+}
+
+.contacts-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.contact-item {
+  background: var(--satispay-white);
+  border: 2px solid var(--satispay-gray-200);
+  border-radius: var(--satispay-border-radius);
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: var(--satispay-shadow);
+}
+
+.contact-item:hover {
+  border-color: var(--satispay-orange);
+  background: linear-gradient(
+    135deg,
+    var(--satispay-orange),
+    var(--satispay-orange-light)
+  );
+  color: var(--satispay-white);
+  transform: translateY(-2px);
+  box-shadow: var(--satispay-shadow-lg);
+}
+
+.contact-nickname {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--satispay-gray-900);
+  margin-bottom: 4px;
+}
+
+.contact-item:hover .contact-nickname {
+  color: var(--satispay-white);
+}
+
+.contact-id {
+  font-size: 14px;
+  color: var(--satispay-gray-500);
+}
+
+.contact-item:hover .contact-id {
+  color: var(--satispay-white);
+}
+
+.contact-added {
+  font-size: 13px;
+  color: var(--satispay-gray-400);
+  margin-top: 6px;
+}
+
+.contact-item:hover .contact-added {
+  color: var(--satispay-white);
+}

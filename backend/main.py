@@ -238,7 +238,28 @@ class TopUp(Resource):
             conn.close()
             return {'message': 'Account not found'}, 404
         new_balance = account['balance'] + amount
+        # Update balance
         conn.execute("UPDATE accounts SET balance = ? WHERE id = ?", (new_balance, account['id']))
+        # Create transaction record
+        tx_id = str(uuid.uuid4())
+        now = datetime.now(timezone.utc).isoformat()
+        conn.execute(
+            """
+            INSERT INTO transactions (id, account_id, amount, currency, type, status, related_id, description, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                tx_id,
+                account['id'],
+                amount,
+                currency,
+                'topup',
+                'completed',
+                None,
+                'Wallet top-up',
+                now
+            )
+        )
         conn.commit()
         conn.close()
         return {'message': 'Top up successful', 'new_balance': new_balance}

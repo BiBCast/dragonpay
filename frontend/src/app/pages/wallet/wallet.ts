@@ -63,7 +63,7 @@ export class WalletComponent {
 
   sendMoney(event: { contact: string; amount: number; currency: string }) {
     // POST to backend (replace URL with your endpoint)
-    this.http.post('/wallet/topup', event).subscribe({
+    this.http.post('/wallet/sendMoney', event).subscribe({
       next: () => {
         this.closeSendMoneyModal();
         this.refreshAccount(); // <-- refresh after top-up

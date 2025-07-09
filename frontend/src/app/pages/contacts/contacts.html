@@ -1,0 +1,24 @@
+<div class="contacts-section">
+  <h2 class="section-title">Contacts</h2>
+  <div class="contacts-list">
+    <div
+      class="contact-item"
+      *ngFor="let contact of contacts"
+      (click)="openSendMoneyModal(contact)"
+    >
+      <div class="contact-nickname">
+        {{ contact.nickname || "No nickname" }}
+      </div>
+
+      <div class="contact-added">
+        Added: {{ contact.added_at | date : "mediumDate" }}
+      </div>
+    </div>
+  </div>
+  <app-send-money-modal
+    *ngIf="showSendMoneyModal"
+    [contact]="selectedContact?.nickname || ''"
+    (close)="closeSendMoneyModal()"
+    (send)="sendMoneyToContact($event)"
+  ></app-send-money-modal>
+</div>
