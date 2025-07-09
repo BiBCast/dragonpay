@@ -213,6 +213,35 @@ class Wallet(Resource):
         conn.close()
         return rows
 
+@wallet_ns.route('/topup')
+class TopUp(Resource):
+    @jwt_required()
+    @wallet_ns.expect(api.model('TopUpRequest', {
+        'amount': fields.Float(required=True),
+        'currency': fields.String(required=True)
+    }))
+    def post(self):
+        user_id = get_jwt_identity()
+        data = request.get_json() or {}
+        amount = data.get('amount')
+        currency = data.get('currency')
+        print(f"[DEBUG] User ID: {user_id}, Amount: {amount}, Currency: {currency}")
+        if not amount or amount <= 0:
+            print(f"[DEBUG] Invalid top-up amount: {amount}")
+            return {'message': 'Amount must be positive'}, 400
+        if not currency:
+            print("[DEBUG] Currency is required for top-up")
+            return {'message': 'Currency is required'}, 400
+        conn = get_db_connection()
+        account = conn.execute("SELECT * FROM accounts WHERE user_id = ?", (user_id,)).fetchone()
+        if not account:
+            conn.close()
+            return {'message': 'Account not found'}, 404
+        new_balance = account['balance'] + amount
+        conn.execute("UPDATE accounts SET balance = ? WHERE id = ?", (new_balance, account['id']))
+        conn.commit()
+        conn.close()
+        return {'message': 'Top up successful', 'new_balance': new_balance}
 # --- Merchants ---
 @merch_ns.route('')
 class MerchList(Resource):

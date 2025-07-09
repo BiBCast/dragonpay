@@ -28,6 +28,9 @@ export class WalletComponent {
   currency = 'EUR';
 
   constructor(private http: HttpClient) {}
+  refreshAccount() {
+    this.user$ = this.auth.getUserAccount();
+  }
 
   openAddMoneyModal() {
     this.showAddMoneyModal = true;
@@ -44,9 +47,10 @@ export class WalletComponent {
 
   addMoney(event: { amount: number; currency: string }) {
     // POST to backend (replace URL with your endpoint)
-    this.http.post('/wallet/topup', event).subscribe({
+    this.http.post('http://localhost:8000/wallet/topup', event).subscribe({
       next: () => {
         this.closeAddMoneyModal();
+        this.refreshAccount(); // <-- refresh after top-up
         // Optionally refresh balance here
       },
       error: (err) => {
@@ -62,6 +66,7 @@ export class WalletComponent {
     this.http.post('/wallet/topup', event).subscribe({
       next: () => {
         this.closeSendMoneyModal();
+        this.refreshAccount(); // <-- refresh after top-up
         // Optionally refresh balance here
       },
       error: (err) => {
