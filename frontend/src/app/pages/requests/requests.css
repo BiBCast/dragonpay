@@ -57,26 +57,36 @@ ul {
   margin: 0 0 2rem 0;
 }
 
-.request-item {
+.request-item,
+.past-request-item {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   padding: 1rem;
   margin-bottom: 1rem;
   background: #f9f9f9;
+  border-left: 4px solid transparent;
   border-radius: 8px;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
+  cursor: pointer;
 }
 
-.request-item:hover {
+.request-item:hover,
+.past-request-item:hover {
   background: #f1f1f1;
 }
 
-.request-item .info {
+.request-item.pending {
+  border-left-color: #ffb300;
+}
+
+.request-item .info,
+.past-request-item .info {
   flex: 1;
 }
 
-.request-item .info strong {
+.request-item .info strong,
+.past-request-item .info strong {
   color: #2e7d32;
   font-size: 1.1rem;
   display: block;
@@ -89,12 +99,17 @@ ul {
   color: #555;
 }
 
-.request-item .info small {
+.request-item .info small,
+.past-request-item .info small {
   color: #999;
 }
 
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .actions button {
-  margin-left: 0.5rem;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
@@ -124,4 +139,84 @@ ul {
   background-color: #b71c1c;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   transform: translateY(-1px);
+}
+
+.actions button:focus {
+  outline: 3px solid #80cbc4;
+  outline-offset: 2px;
+}
+
+.detail-panel {
+  background: #fdfdfd;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.1s;
+}
+
+.detail-panel:hover {
+  transform: scale(1.01);
+}
+
+.close-detail-btn {
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: #ddd;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.close-detail-btn:hover {
+  background: #ccc;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .requests-container {
+    padding: 1rem;
+    margin: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .new-request-btn {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .request-item,
+  .past-request-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.75rem;
+  }
+
+  .actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+
+  .detail-panel {
+    padding: 0.75rem;
+  }
+
+  .detail-panel p {
+    font-size: 0.9rem;
+  }
 }

@@ -1,45 +1,85 @@
-<!-- requests.component.html -->
+<!-- src/app/requests/requests.component.html -->
 <div class="requests-container">
   <div class="header">
     <h3>Pending Payment Requests</h3>
     <button class="new-request-btn" (click)="openRequestModal()">
-      New Request
+      + New Request
     </button>
   </div>
 
-  <div *ngIf="loading" class="loading">Loading…</div>
-  <div *ngIf="error" class="error">{{ error }}</div>
-
-  <ul *ngIf="!loading && !error">
-    <li *ngFor="let req of pendingRequests" class="request-item">
-      <div class="info">
-        <strong>{{ req.amount | number : "1.2-2" }} {{ req.currency }}</strong>
-        from user #{{ req.requester_id }}
-        <p *ngIf="req.message" class="message">{{ req.message }}</p>
-        <small>Requested at {{ req.created_at | date : "short" }}</small>
-      </div>
-      <div class="actions">
-        <button (click)="handleRequest(req, 'accepted')">Accept</button>
-        <button (click)="handleRequest(req, 'declined')">Decline</button>
-      </div>
-    </li>
-    <li *ngIf="pendingRequests.length === 0">No pending requests</li>
-  </ul>
-
-  <h3>All Requests</h3>
-  <ul>
-    <li *ngFor="let req of allRequests">
-      {{ req.amount | number : "1.2-2" }} {{ req.currency }} from #{{
-        req.requester_id
-      }}
-      — status: {{ req.status }}
-    </li>
-  </ul>
-  <!-- Create Request Modal -->
+  <!-- Modal di creazione richiesta -->
   <app-request-create-modal
     *ngIf="showRequestModal"
     [contacts]="myContacts"
     (close)="showRequestModal = false"
     (success)="onRequestCreated()"
   ></app-request-create-modal>
+
+  <div *ngIf="loading" class="loading">Loading…</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <!-- Richieste in sospeso -->
+  <!-- <pre>{{ pendingRequests | json }} </pre> -->
+  <ul *ngIf="!loading && !error" class="requests-list">
+    <li *ngFor="let req of pendingRequests" class="request-item">
+      <div class="info" (click)="viewRequestDetail(req)">
+        <strong class="amount"
+          >{{ req.amount | number : "1.2-2" }} {{ req.currency }}</strong
+        >
+        <span class="from">from {{ req.other_user?.full_name }}</span>
+        <p *ngIf="req.message" class="message">{{ req.message }}</p>
+        <small class="timestamp"
+          >Requested at {{ req.created_at | date : "short" }}</small
+        >
+      </div>
+      <div class="actions">
+        <button class="btn-accept" (click)="handleRequest(req, 'accept')">
+          Accept
+        </button>
+        <button class="btn-decline" (click)="handleRequest(req, 'decline')">
+          Decline
+        </button>
+      </div>
+
+      <!-- Dettagli inline -->
+      <div *ngIf="selectedRequest?.id === req.id" class="detail-panel">
+        <p>
+          <strong>Amount:</strong> {{ req.amount | number : "1.2-2" }}
+          {{ req.currency }}
+        </p>
+        <p><strong>From:</strong> {{ req.other_user?.full_name }}</p>
+        <p *ngIf="req.message"><strong>Message:</strong> {{ req.message }}</p>
+        <p><strong>Status:</strong> {{ req.status }}</p>
+        <p><strong>Created:</strong> {{ req.created_at }}</p>
+      </div>
+    </li>
+  </ul>
+  <h3>All Requests</h3>
+  <ul class="requests-list">
+    <li *ngFor="let req of allRequests" class="past-request-item">
+      <div class="info" (click)="viewRequestDetail(req)">
+        <strong>{{ req.amount | number : "1.2-2" }} {{ req.currency }}</strong>
+        <span class="from">from {{ req.other_user?.full_name }}</span>
+        <span class="status">— status: {{ req.status }}</span>
+      </div>
+
+      <div *ngIf="selectedRequest?.id === req.id" class="detail-panel">
+        <p>
+          <strong>Amount:</strong> {{ req.amount | number : "1.2-2" }}
+          {{ req.currency }}
+        </p>
+        <p><strong>From:</strong> {{ req.other_user?.full_name }}</p>
+        <p *ngIf="req.message"><strong>Message:</strong> {{ req.message }}</p>
+        <p><strong>Status:</strong> {{ req.status }}</p>
+        <p><strong>Created:</strong> {{ req.created_at | date : "short" }}</p>
+        <p *ngIf="req.expires_at">
+          <strong>Expires:</strong> {{ req.expires_at | date : "short" }}
+        </p>
+        <button class="close-detail-btn" (click)="closeDetail()">
+          Close Details
+        </button>
+      </div>
+    </li>
+    <li *ngIf="allRequests.length === 0" class="empty">No requests found</li>
+  </ul>
 </div>

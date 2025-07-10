@@ -1,27 +1,13 @@
-// requests.component.ts
+// src/app/requests/requests.component.ts
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { RequestCreateComponent } from './request-create.component';
-
-interface PaymentRequest {
-  id: string;
-  requester_id: number;
-  requestee_id: number;
-  amount: number;
-  currency: string;
-  message?: string;
-  status: 'pending' | 'accepted' | 'declined' | 'expired';
-  created_at: string;
-  expires_at?: string;
-}
-
-interface Contact {
-  id: number;
-  username: string;
-  nickname: string;
-}
+import {
+  Contact,
+  PaymentRequestWithUser,
+} from '../../../api-client/data-contracts';
 
 @Component({
   standalone: true,
@@ -31,14 +17,15 @@ interface Contact {
   styleUrls: ['./requests.css'],
 })
 export class RequestsComponent implements OnInit {
-  allRequests: PaymentRequest[] = [];
-  pendingRequests: PaymentRequest[] = [];
+  allRequests: PaymentRequestWithUser[] = [];
+  pendingRequests: PaymentRequestWithUser[] = [];
   myContacts: Contact[] = [];
   loading = false;
   error: string | null = null;
   showRequestModal = false;
+  selectedRequest: PaymentRequestWithUser | null = null;
 
-  @Output() requestHandled = new EventEmitter<{ id: string; status: string }>();
+  @Output() requestHandled = new EventEmitter<{ id: number; status: string }>();
 
   constructor(private http: HttpClient) {}
 
@@ -47,13 +34,11 @@ export class RequestsComponent implements OnInit {
     this.loadContacts();
   }
 
-  /** Fetch both all and pending requests */
   reloadRequests() {
     this.loading = true;
     this.error = null;
-
     this.http
-      .get<PaymentRequest[]>('http://localhost:8000/requests')
+      .get<PaymentRequestWithUser[]>('http://localhost:8000/requests')
       .subscribe({
         next: (list) => {
           this.allRequests = list;
@@ -77,19 +62,28 @@ export class RequestsComponent implements OnInit {
     this.showRequestModal = true;
   }
 
-  handleRequest(req: PaymentRequest, action: 'accepted' | 'declined') {
+  handleRequest(req: PaymentRequestWithUser, action: 'accept' | 'decline') {
     this.loading = true;
     this.error = null;
 
     this.http
-      .post(`http://localhost:8000/requests/${req.id}/${action}`, {})
+      .put<PaymentRequestWithUser>(`http://localhost:8000/requests/decision`, {
+        id: req.id,
+        action,
+      })
       .subscribe({
-        next: () => {
-          req.status = action;
+        next: (updated) => {
+          // aggiorna stato localmente
+          req.status = updated.status;
+
           this.pendingRequests = this.pendingRequests.filter(
             (r) => r.id !== req.id
           );
-          this.requestHandled.emit({ id: req.id, status: action });
+
+          this.requestHandled.emit({
+            id: req.id || 0,
+            status: updated.status || '',
+          });
           this.loading = false;
         },
         error: () => {
@@ -99,9 +93,16 @@ export class RequestsComponent implements OnInit {
       });
   }
 
-  /** Called by the create modal on success */
   onRequestCreated() {
     this.showRequestModal = false;
     this.reloadRequests();
+  }
+
+  viewRequestDetail(req: PaymentRequestWithUser) {
+    this.selectedRequest = req;
+  }
+
+  closeDetail() {
+    this.selectedRequest = null;
   }
 }

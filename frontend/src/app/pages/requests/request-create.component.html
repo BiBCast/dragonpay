@@ -7,7 +7,7 @@
       <select [(ngModel)]="selectedContact" name="contact" required>
         <option value="" disabled>Select contact</option>
         <option *ngFor="let c of contacts" [value]="c.id">
-          {{ c.nickname }} ({{ c.username }})
+          {{ c.nickname }} ({{ c.owner_id }})
         </option>
       </select>
     </label>

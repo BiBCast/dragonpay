@@ -54,7 +54,7 @@ user_model = api.model('User', {
 })
 
 account_model = api.model('Account', {
-    'id': fields.String,
+    'id': fields.Integer,
     'user_id': fields.Integer,
     'balance': fields.Float,
     'currency': fields.String,
@@ -77,7 +77,7 @@ contact_model = api.model('Contact', {
 })
 
 transaction_model = api.model('Transaction', {
-    'id': fields.String,
+    'id': fields.Integer,
     'account_id': fields.String,
     'amount': fields.Float,
     'currency': fields.String,
@@ -89,7 +89,7 @@ transaction_model = api.model('Transaction', {
 })
 
 payment_request_model = api.model('PaymentRequest', {
-    'id': fields.String,
+    'id': fields.Integer,
     'requester_id': fields.Integer,
     'requestee_id': fields.Integer,
     'amount': fields.Float,
@@ -98,6 +98,23 @@ payment_request_model = api.model('PaymentRequest', {
     'status': fields.String(enum=['pending','accepted','declined','expired']),
     'created_at': fields.String,
     'expires_at': fields.String
+})
+
+user_brief = api.model('UserBrief', {
+    'id': fields.Integer,
+    'username': fields.String,
+    'full_name': fields.String,
+    'email': fields.String
+})
+
+request_with_user = api.model('PaymentRequestWithUser', {
+    **payment_request_model,  # existing fields
+    'other_user': fields.Nested(user_brief)  # nested metadata
+})
+
+decision_model = api.model('RequestDecision', {
+  'id': fields.Integer(required=True),
+  'action': fields.String(required=True, enum=['accept', 'decline'])
 })
 
 # --- DB Helper ---
@@ -277,11 +294,11 @@ def create_transaction(conn, account_id, amount, currency, tx_type, status, rela
     now = datetime.now(timezone.utc).isoformat()
     conn.execute(
         """
-        INSERT INTO transactions (id, account_id, amount, currency, type, status, related_id, description, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO transactions ( account_id, amount, currency, type, status, related_id, description, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """,
         (
-            tx_id,
+            
             account_id,
             amount,
             currency,
@@ -475,16 +492,199 @@ class Transactions(Resource):
 @req_ns.route('')
 class ReqList(Resource):
     @jwt_required()
-    @req_ns.marshal_list_with(payment_request_model)
+    @req_ns.marshal_list_with(request_with_user)
     def get(self):
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         conn = get_db_connection()
         rows = conn.execute(
-            "SELECT * FROM payment_requests WHERE requester_id = ? OR requestee_id = ?",
-            (user_id, user_id)
+            """SELECT p.*, 
+                      u.id   AS other_id,
+                      u.username AS other_username, 
+                      u.full_name AS other_full_name, 
+                      u.email AS other_email
+               FROM payment_requests p
+               JOIN users u ON  u.id = p.requester_id
+               WHERE p.requestee_id = ? 
+            """, (user_id,)
         ).fetchall()
         conn.close()
-        return rows
+
+        # Format each row to include nested 'other_user'
+        output = []
+        for r in rows:
+            d = dict(r)
+            d['other_user'] = {
+                'id': d.pop('other_id'),
+                'username': d.pop('other_username'),
+                'full_name': d.pop('other_full_name'),
+                'email': d.pop('other_email')
+            }
+            output.append(d)
+        return output
+
+
+@req_ns.route('/decision')
+class ReqDecision(Resource):
+    @jwt_required()
+    @req_ns.expect(decision_model, validate=True)
+    @req_ns.marshal_with(payment_request_model)
+    def put(self):
+        """
+        Accept or decline a pending payment request.
+        """
+        print("[DEBUG] Processing payment request decision")
+        data = request.get_json()
+        user_id =  int(get_jwt_identity())
+        req_id = int(data['id'])
+        action = data['action']
+
+        if action not in ('accept', 'decline'):
+            api.abort(400, 'Action must be "accept" or "decline"')
+
+        conn = get_db_connection()
+        try:
+            conn.execute('BEGIN')
+            req = conn.execute(
+                "SELECT * FROM payment_requests WHERE id = ?",
+                (req_id,)
+            ).fetchone()
+
+            requester_user = conn.execute(
+                            "SELECT * FROM users WHERE id = ?",
+                            (req["requester_id"],)
+                        ).fetchone()
+            requester_account = conn.execute(
+                            "SELECT * FROM accounts WHERE user_id = ?",
+                            (req["requester_id"],)
+                        ).fetchone()
+            
+            if not req:
+                api.abort(404, 'Request not found or not for this user')
+            if req['status'] != 'pending':
+                api.abort(400, 'Request is not pending')
+
+            if action == 'decline':
+                conn.execute(
+                    "UPDATE payment_requests SET status = 'declined' WHERE id = ?",
+                    (req_id,)
+                )
+                conn.commit()
+                req = dict(req)
+                req['status'] = 'declined'
+                return req
+
+            # action == 'accept'
+            # 1️⃣ Create transaction
+            acct = conn.execute(
+                "SELECT id, balance, currency FROM accounts WHERE user_id = ?",
+                (user_id,)
+            ).fetchone()
+            if not acct or acct['balance'] < req['amount']:
+                api.abort(400, 'Insufficient funds to accept request')
+
+            new_balance = acct['balance'] - req['amount']
+            conn.execute("UPDATE accounts SET balance = ? WHERE id = ?",
+                         (new_balance, acct['id']))
+            #io acct altro 
+            tx1 = create_transaction(
+                conn, acct['id'],
+                -req['amount'],
+                req['currency'],
+                'payment',
+                'completed',
+                req_id,
+                f"Payment for request {requester_user["full_name"]}"  # Use full name of user,
+            )
+            tx2 = create_transaction(
+                    conn, requester_account["id"], req['amount'], req['currency'],
+                    'payment', 'completed', tx1,
+                    f"Payment for request {requester_user['full_name']}"  # Use full name of sender
+            )
+            # Link them
+            conn.execute(
+                "UPDATE transactions SET related_id = ? WHERE id = ?",
+                (tx2, tx1)
+            )
+            # 2️⃣ Update status
+            conn.execute(
+                "UPDATE payment_requests SET status = 'accepted' WHERE id = ?",
+                (req_id,)
+            )
+            conn.commit()
+
+            req = dict(req)
+            req['status'] = 'accepted'
+            return req
+
+        except Exception as e:
+            conn.rollback()
+            api.abort(500, f'Internal error: {e}')
+        finally:
+            conn.close()
+
+@req_ns.route('/create')
+class ReqCreate(Resource):
+    @jwt_required()
+    #@req_ns.expect(payment_request_model, validate=True)
+    @req_ns.marshal_with(payment_request_model)
+    def post(self):
+        """
+        Create a new payment request—current user is the requester.
+        """
+        data = request.get_json()
+        user_id = get_jwt_identity()
+
+        # pull fields out of the incoming JSON (all optional in the model)
+        requestee_id = data.get('requestee_id')
+        amount       = data.get('amount')
+        currency     = data.get('currency')
+        message      = data.get('message')
+        expires_at   = data.get('expires_at')
+
+        # basic validation
+        if not requestee_id:
+            api.abort(400, '`requestee_id` is required')
+        if amount is None or amount <= 0:
+            api.abort(400, '`amount` must be a positive number')
+        if not currency:
+            api.abort(400, '`currency` is required')
+
+        conn = get_db_connection()
+        try:
+            conn.execute('BEGIN')
+
+            # verify the requestee exists
+            if not conn.execute("SELECT 1 FROM users WHERE id = ?", (requestee_id,)).fetchone():
+                api.abort(404, 'Requestee not found')
+
+            req_id = str(uuid.uuid4())
+            now    = datetime.now(timezone.utc).isoformat()
+
+            conn.execute("""
+              INSERT INTO payment_requests
+                ( requester_id, requestee_id, amount, currency, message, status, created_at, expires_at)
+              VALUES ( ?, ?, ?, ?, ?, 'pending', ?, ?)
+            """, ( user_id, requestee_id, amount, currency, message, now, expires_at))
+
+            conn.commit()
+
+            return {
+                
+                'requester_id': user_id,
+                'requestee_id': requestee_id,
+                'amount': amount,
+                'currency': currency,
+                'message': message,
+                'status': 'pending',
+                'created_at': now,
+                'expires_at': expires_at
+            }, 201
+
+        except Exception as e:
+            conn.rollback()
+            api.abort(500, f'Internal error: {e}')
+        finally:
+            conn.close()
 
 # --- Health ---
 @api.route('/hello')

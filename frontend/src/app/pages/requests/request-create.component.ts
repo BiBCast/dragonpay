@@ -2,12 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-
-interface Contact {
-  id: number;
-  nickname: string;
-  username: string;
-}
+import { Contact } from '../../../api-client/data-contracts';
 
 @Component({
   standalone: true,
@@ -57,7 +52,7 @@ export class RequestCreateComponent implements OnInit {
       expires_at: this.expiresAt || undefined,
     };
 
-    this.http.post('http://localhost:8000/requests', payload).subscribe({
+    this.http.post('http://localhost:8000/requests/create', payload).subscribe({
       next: () => {
         this.loading = false;
         this.success.emit();

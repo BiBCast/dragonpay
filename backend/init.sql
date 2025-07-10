@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 -- Accounts (wallets) linked to users
 CREATE TABLE IF NOT EXISTS accounts (
-    id         TEXT PRIMARY KEY,
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id    INTEGER NOT NULL,
     balance    REAL NOT NULL DEFAULT 0.0,
     currency   TEXT NOT NULL DEFAULT 'EUR',
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS contacts (
 
 -- Transactions: record of money movement
 CREATE TABLE IF NOT EXISTS transactions (
-    id            TEXT PRIMARY KEY,
+    id            INTEGER PRIMARY KEY,
     account_id    TEXT NOT NULL,
     amount        REAL NOT NULL,
     currency      TEXT NOT NULL DEFAULT 'EUR',
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS transactions (
 
 -- Payment requests: user-to-user payment requests
 CREATE TABLE IF NOT EXISTS payment_requests (
-    id            TEXT PRIMARY KEY,
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
     requester_id  INTEGER NOT NULL,
     requestee_id  INTEGER NOT NULL,
     amount        REAL NOT NULL,
@@ -92,11 +92,11 @@ VALUES
   ('luca',  'Luca Bianchi','luca@example.com',  'HASH3', '2025-07-01T10:10:00Z');
 
 -- Seed accounts
-INSERT INTO accounts (id, user_id, balance, currency, created_at)
+INSERT INTO accounts (user_id, balance, currency, created_at)
 VALUES
-  ('WALLET-alice', 1, 1200.50, 'EUR', '2025-07-01T10:00:00Z'),
-  ('WALLET-mario', 2,  850.00, 'EUR', '2025-07-01T10:05:00Z'),
-  ('WALLET-luca',  3, 2000.00, 'EUR', '2025-07-01T10:10:00Z');
+  ( 1, 1200.50, 'EUR', '2025-07-01T10:00:00Z'),
+  ( 2,  850.00, 'EUR', '2025-07-01T10:05:00Z'),
+  (  3, 2000.00, 'EUR', '2025-07-01T10:10:00Z');
 
 -- Seed merchants
 INSERT INTO merchants (name, merchant_code, created_at)
@@ -113,15 +113,23 @@ VALUES
   (2, 1, 'Sis Alice', '2025-07-01T11:10:00Z');
 
 -- Seed transactions
-INSERT INTO transactions (id, account_id, amount, currency, type, status, related_id, description, created_at)
+INSERT INTO transactions ( account_id, amount, currency, type, status, related_id, description, created_at)
 VALUES
-  ('TXN-001', 'WALLET-alice', -45.00, 'EUR', 'payment', 'completed', 'MERCH-BOOK-001', 'Bought novels', '2025-07-01T12:00:00Z'),
-  ('TXN-002', 'WALLET-mario', -12.50, 'EUR', 'payment', 'completed', 'MERCH-PIZZA-002','Lunch pizza','2025-07-01T12:30:00Z'),
-  ('TXN-003', 'WALLET-luca', +500.00, 'EUR', 'topup',   'completed', NULL,             'Salary',    '2025-07-01T08:00:00Z'),
-  ('TXN-004', 'WALLET-alice', -20.00, 'EUR', 'request', 'pending',  'REQ-001',         'Dinner share','2025-07-01T13:00:00Z');
+  ( 1, -45.00, 'EUR', 'payment', 'completed', 'MERCH-BOOK-001', 'Bought novels', '2025-07-01T12:00:00Z'),
+  ( 2, -12.50, 'EUR', 'payment', 'completed', 'MERCH-PIZZA-002','Lunch pizza','2025-07-01T12:30:00Z'),
+  ( 3, +500.00, 'EUR', 'topup',   'completed', NULL,             'Salary',    '2025-07-01T08:00:00Z'),
+  ( 1, -20.00, 'EUR', 'request', 'pending',  'REQ-001',         'Dinner share','2025-07-01T13:00:00Z');
 
 -- Seed payment requests
-INSERT INTO payment_requests (id, requester_id, requestee_id, amount, currency, message, status, created_at, expires_at)
-VALUES
-  ('REQ-001', 1, 2, 20.00, 'EUR', 'Share dinner cost', 'pending', '2025-07-01T13:00:00Z', '2025-07-08T13:00:00Z'),
-  ('REQ-002', 3, 1, 15.75, 'EUR', 'Coffee treat',     'accepted','2025-07-01T14:00:00Z','2025-07-08T14:00:00Z');
+-- Seed payment requests aggiuntivi per test
+INSERT INTO payment_requests (
+  requester_id, requestee_id, amount, currency, message, status, created_at, expires_at
+) VALUES
+  (2, 3, 30.00, 'EUR', 'Movie tickets',   'pending',  '2025-07-02T15:00:00Z', '2025-07-09T15:00:00Z'),
+  (3, 2, 50.25, 'EUR', 'Concert tickets', 'pending','2025-07-03T16:00:00Z', '2025-07-10T16:00:00Z'),
+  (1, 3, 10.00, 'EUR', 'Coffee run',       'pending','2025-07-04T09:00:00Z', '2025-07-11T09:00:00Z'),
+  (2, 1, 75.50, 'EUR', 'Grocery share',    'pending', '2025-07-05T12:00:00Z', '2025-07-12T12:00:00Z'),
+  (2, 3, 30.00, 'EUR', 'Movie tickets',   'declined',  '2025-07-02T15:00:00Z', '2025-07-09T15:00:00Z'),
+  (3, 2, 50.25, 'EUR', 'Concert tickets', 'declined','2025-07-03T16:00:00Z', '2025-07-10T16:00:00Z'),
+  (1, 3, 10.00, 'EUR', 'Coffee run',       'declined','2025-07-04T09:00:00Z', '2025-07-11T09:00:00Z'),
+  (2, 1, 75.50, 'EUR', 'Grocery share',    'declined', '2025-07-05T12:00:00Z', '2025-07-12T12:00:00Z')

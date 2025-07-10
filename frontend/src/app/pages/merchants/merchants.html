@@ -14,7 +14,7 @@
   <app-send-money-modal
     *ngIf="showSendMoneyModal"
     [readonlyContact]="true"
-    [contact]="selectedMerchant?.name ?? ''"
+    [contact]="selectedMerchant?.merchant_code ?? ''"
     (close)="closeSendMoneyModal()"
     (success)="onAddMoneySuccess()"
   ></app-send-money-modal>
