@@ -532,6 +532,7 @@ class ReqDecision(Resource):
         """
         Accept or decline a pending payment request.
         """
+        # TODO non da soldi indietro a chi manda la richiesta
         print("[DEBUG] Processing payment request decision")
         data = request.get_json()
         user_id =  int(get_jwt_identity())
@@ -585,6 +586,10 @@ class ReqDecision(Resource):
             new_balance = acct['balance'] - req['amount']
             conn.execute("UPDATE accounts SET balance = ? WHERE id = ?",
                          (new_balance, acct['id']))
+            
+            new_balance_requester = requester_account['balance'] + req['amount']
+            conn.execute("UPDATE accounts SET balance = ? WHERE id = ?",
+                         (new_balance_requester, requester_account['id']))
             #io acct altro 
             tx1 = create_transaction(
                 conn, acct['id'],
