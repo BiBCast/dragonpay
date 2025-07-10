@@ -1,0 +1,79 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  z-index: 1001;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.modal h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.25rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.modal-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.modal-actions button:first-child {
+  background: #2e7d32;
+  color: #fff;
+  margin-right: 0.5rem;
+}
+
+.modal-actions button:last-child {
+  background: #ddd;
+  color: #333;
+}
+
+.error {
+  margin-top: 0.75rem;
+  color: #d32f2f;
+  font-size: 0.85rem;
+  text-align: center;
+}
