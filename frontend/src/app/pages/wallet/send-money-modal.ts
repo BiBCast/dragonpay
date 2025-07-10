@@ -2,12 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-
-interface User {
-  id: number;
-  username: string;
-  full_name: string;
-}
+import { Contact } from '../../../api-client/data-contracts';
 
 @Component({
   standalone: true,
@@ -28,8 +23,8 @@ interface User {
               #contactSelect="ngModel"
             >
               <option value="" disabled>Select a user</option>
-              <option *ngFor="let u of users" [value]="u.username">
-                {{ u.full_name }} ({{ u.username }})
+              <option *ngFor="let u of contacts" [value]="u.contact_id">
+                {{ u.nickname }}
               </option>
             </select>
             <div
@@ -140,7 +135,7 @@ export class SendMoneyModalComponent implements OnInit {
     currency: string;
   }>();
 
-  users: User[] = []; // loaded users
+  contacts: Contact[] = []; // loaded users
   amount = 0;
   currency = 'EUR';
   loading = false;
@@ -150,7 +145,7 @@ export class SendMoneyModalComponent implements OnInit {
 
   ngOnInit() {
     if (this.useUserSelect) {
-      this.fetchUsers();
+      this.fetchContacts();
     }
   }
 
@@ -158,11 +153,11 @@ export class SendMoneyModalComponent implements OnInit {
     this.close.emit();
   }
 
-  private fetchUsers() {
+  private fetchContacts() {
     this.http
-      .get<User[]>('http://localhost:8000/users') // your endpoint
+      .get<Contact[]>('http://localhost:8000/contacts') // your endpoint
       .subscribe({
-        next: (list) => (this.users = list),
+        next: (list) => (this.contacts = list),
         error: () => (this.error = 'Could not load users'),
       });
   }

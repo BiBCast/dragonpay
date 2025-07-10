@@ -23,6 +23,7 @@
 
     <app-send-money-modal
       *ngIf="showSendMoneyModal"
+      [useUserSelect]="true"
       (close)="closeSendMoneyModal()"
       (success)="onSendMoneySuccess()"
     ></app-send-money-modal>

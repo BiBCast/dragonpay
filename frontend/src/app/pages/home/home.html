@@ -112,7 +112,6 @@
   <app-send-money-modal
     *ngIf="showSendMoneyModal"
     [contact]="selectedMerchant?.merchant_code ?? ''"
-    [useUserSelect]="true"
     [readonlyContact]="true"
     (close)="closeSendMoneyModal()"
     (success)="onAddMoneySuccess()"

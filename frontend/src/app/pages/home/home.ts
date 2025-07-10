@@ -31,27 +31,6 @@ export class HomeComponent implements OnInit {
       trend: '+12.5%',
       trendUp: true,
     },
-    {
-      title: 'Monthly Transactions',
-      value: '145',
-      icon: '💳',
-      trend: '+8.2%',
-      trendUp: true,
-    },
-    {
-      title: 'Saved Money',
-      value: '€89.32',
-      icon: '🎯',
-      trend: '+24.1%',
-      trendUp: true,
-    },
-    {
-      title: 'Active Cashback',
-      value: '€12.45',
-      icon: '🔄',
-      trend: '-2.3%',
-      trendUp: false,
-    },
   ];
 
   recentTransactions = [
@@ -106,6 +85,27 @@ export class HomeComponent implements OnInit {
           trend: '+0%',
           trendUp: true,
         },
+        {
+          title: 'Monthly Transactions',
+          value: '145',
+          icon: '💳',
+          trend: '+8.2%',
+          trendUp: true,
+        },
+        {
+          title: 'Saved Money',
+          value: '€89.32',
+          icon: '🎯',
+          trend: '+24.1%',
+          trendUp: true,
+        },
+        {
+          title: 'Active Cashback',
+          value: '€12.45',
+          icon: '🔄',
+          trend: '-2.3%',
+          trendUp: false,
+        },
         // ...other stats as needed
       ];
     });
@@ -128,8 +128,10 @@ export class HomeComponent implements OnInit {
   onQuickAction(action: string) {
     console.log('Quick action:', action);
     if (action === 'send') {
+      this.router.navigate(['/home/contacts']);
       //this.openSendMoneyModal(this.merchants[0]); // Example: open modal for first merchant
     } else if (action === 'request') {
+      this.router.navigate(['/home/requests']);
       // Implement request money logic
     } else if (action === 'wallet') {
       this.router.navigate(['/home/wallet']);

@@ -327,6 +327,11 @@ class SendMoney(Resource):
                 "SELECT id, balance, currency FROM accounts WHERE user_id = ?",
                 (user_id,)
             ).fetchone()
+            
+            sender_container = conn.execute(
+                "SELECT * FROM users  WHERE id = ?",
+                (user_id,)
+            ).fetchone()
             if not sender:
                 return {'message': 'Sender account not found'}, 404
             if sender['currency'] != currency:
@@ -336,7 +341,7 @@ class SendMoney(Resource):
 
             # 3️⃣ Try to resolve as user
             recipient_user = conn.execute(
-                "SELECT u.id, a.id AS acct_id, a.balance, a.currency "
+                "SELECT u.id, a.id AS acct_id, a.balance, a.currency,u.full_name "
                 "FROM users u JOIN accounts a ON a.user_id = u.id "
                 "WHERE u.username = ? OR u.id = ?",
                 (contact, contact)
@@ -347,7 +352,7 @@ class SendMoney(Resource):
                 r_acct_id = recipient_user['acct_id']
                 r_balance = recipient_user['balance']
                 r_currency= recipient_user['currency']
-                r_name    = contact
+                r_name    = recipient_user['full_name']
 
                 if r_currency != currency:
                     return {'message': 'Recipient currency mismatch'}, 400
@@ -374,7 +379,7 @@ class SendMoney(Resource):
                 tx2 = create_transaction(
                     conn, r_acct_id, amount, currency,
                     'payment', 'completed', tx1,
-                    f"Received from {sender['id']}"
+                    f"Received from {sender_container['full_name']}"  # Use full name of sender
                 )
                 # Link them
                 conn.execute(
