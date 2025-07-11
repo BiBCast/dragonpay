@@ -1,0 +1,64 @@
+@startuml
+hide circle
+skinparam linetype ortho
+
+entity "users" as U {
+  * id : INTEGER [PK]
+    name : VARCHAR
+    email : VARCHAR
+    password_hash : VARCHAR
+    created_at : DATETIME
+}
+
+entity "accounts" as A {
+  * id : INTEGER [PK]
+    user_id : INTEGER [FK]
+    account_number : VARCHAR
+    balance : DECIMAL
+    created_at : DATETIME
+}
+
+entity "merchants" as M {
+  * id : INTEGER [PK]
+    name : VARCHAR
+    description : TEXT
+    api_key : VARCHAR
+    created_at : DATETIME
+}
+
+entity "contacts" as C {
+  * id : INTEGER [PK]
+    user_id : INTEGER [FK]
+    contact_user_id : INTEGER [FK]
+    added_at : DATETIME
+}
+
+entity "transactions" as T {
+  * id : INTEGER [PK]
+    account_id : INTEGER [FK]
+    merchant_id : INTEGER [FK] «nullable»
+    amount : DECIMAL
+    type : VARCHAR
+    timestamp : DATETIME
+    payment_request_id : INTEGER [FK] «nullable»
+}
+
+entity "payment_requests" as PR {
+  * id : INTEGER [PK]
+    requester_id : INTEGER [FK]
+    requestee_id : INTEGER [FK]
+    amount : DECIMAL
+    status : VARCHAR
+    created_at : DATETIME
+    responded_at : DATETIME «nullable»
+}
+
+' Relazioni
+U ||--o{ A : "owns"
+U ||--o{ C : "has"
+U ||--o{ PR : "requests"
+U ||--o{ PR : "is_requested_by"
+A ||--o{ T : "records"
+M ||--o{ T : "involves"
+PR ||--o{ T : "generates"
+@enduml

@@ -1,0 +1,62 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class users {
+  +INTEGER id
+  +VARCHAR name
+  +VARCHAR email
+  +VARCHAR password_hash
+  +DATETIME created_at
+}
+
+class accounts {
+  +INTEGER id
+  +INTEGER user_id
+  +VARCHAR account_number
+  +DECIMAL balance
+  +DATETIME created_at
+}
+
+class merchants {
+  +INTEGER id
+  +VARCHAR name
+  +TEXT description
+  +VARCHAR api_key
+  +DATETIME created_at
+}
+
+class contacts {
+  +INTEGER id
+  +INTEGER user_id
+  +INTEGER contact_user_id
+  +DATETIME added_at
+}
+
+class transactions {
+  +INTEGER id
+  +INTEGER account_id
+  +INTEGER merchant_id   «nullable»
+  +DECIMAL amount
+  +VARCHAR type
+  +DATETIME timestamp
+}
+
+class payment_requests {
+  +INTEGER id
+  +INTEGER requester_id
+  +INTEGER requestee_id
+  +DECIMAL amount
+  +VARCHAR status
+  +DATETIME created_at
+  +DATETIME responded_at   «nullable»
+}
+
+users "1" -- "0..*" accounts         : user_id >
+users "1" -- "0..*" contacts         : user_id >
+users "1" -- "0..*" payment_requests : requester_id >
+users "1" -- "0..*" payment_requests : requestee_id >
+accounts "1" -- "0..*" transactions  : account_id >
+merchants "1" -- "0..*" transactions : merchant_id >
+payment_requests "1" -- "0..1" transactions : id = payment_request_id >
+
+@enduml
