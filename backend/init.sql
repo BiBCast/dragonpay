@@ -108,9 +108,9 @@ VALUES
 -- Seed contacts (alice ↔ mario, alice ↔ luca)
 INSERT INTO contacts (owner_id, contact_id, nickname, added_at)
 VALUES
-  (1, 2, 'Bro Mario', '2025-07-01T11:00:00Z'),
-  (1, 3, 'Buddy Luca','2025-07-01T11:05:00Z'),
-  (2, 1, 'Sis Alice', '2025-07-01T11:10:00Z');
+  (1, 2, 'super Mario', '2025-07-01T11:00:00Z'),
+  (1, 3, 'Luca cugino','2025-07-01T11:05:00Z'),
+  (2, 1, 'Alice vicina', '2025-07-01T11:10:00Z');
 
 -- Seed transactions
 INSERT INTO transactions ( account_id, amount, currency, type, status, related_id, description, created_at)
