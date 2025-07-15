@@ -41,7 +41,6 @@
     Ubuntu, Cantarell, sans-serif;
 }
 
-/* Header Styles */
 .header {
   background: var(--satispay-white);
   height: var(--header-height);
@@ -168,7 +167,6 @@
   text-align: center;
 }
 
-/* Sidebar Styles */
 .main-content {
   flex: 1;
   display: flex;
@@ -247,7 +245,6 @@
   padding: 12px;
 }
 
-/* Sidebar Footer */
 .sidebar-footer {
   padding: 16px;
   border-top: 1px solid var(--satispay-gray-200);

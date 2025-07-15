@@ -1,4 +1,3 @@
-// wallet.ts
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -21,7 +20,7 @@ import { AuthService } from '../../auth.services';
 })
 export class WalletComponent {
   private auth = inject(AuthService);
-  user$ = this.auth.getUserAccount(); // Observable<User | null>
+  user$ = this.auth.getUserAccount();
   showAddMoneyModal = false;
   showSendMoneyModal = false;
   balance = 0;
@@ -45,13 +44,9 @@ export class WalletComponent {
     this.showSendMoneyModal = false;
   }
 
-  // No longer needed: addMoney(event)
-
   onAddMoneySuccess() {
     this.refreshAccount();
   }
-
-  // No longer needed: sendMoney(event)
 
   onSendMoneySuccess() {
     this.refreshAccount();

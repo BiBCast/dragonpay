@@ -37,7 +37,7 @@ export class AuthService {
     if (!token) return null;
     try {
       const decoded: any = jwtDecode(token);
-      // Example: if your JWT has sub as user id
+
       return decoded;
     } catch {
       return null;
@@ -46,14 +46,14 @@ export class AuthService {
   getUserProfile() {
     const user = this.getCurrentUser();
     if (!user) return null;
-    // Return the Observable so the component can subscribe
+
     return this.http.get<User>(`http://localhost:8000/users/me`);
   }
 
   getUserAccount() {
     const user = this.getCurrentUser();
     if (!user) return null;
-    // Return the Observable so the component can subscribe
+
     return this.http.get<Account>(`http://localhost:8000/wallet`);
   }
 }

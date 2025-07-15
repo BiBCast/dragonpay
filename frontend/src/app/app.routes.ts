@@ -1,4 +1,3 @@
-// app.routes.ts - Updated with new components
 import { Routes } from '@angular/router';
 import { LoginPageComponent } from './pages/login/login';
 import { MainLayoutComponent } from './pages/layout/layout';

@@ -20,7 +20,7 @@ import { ErrorInterceptor } from './app/error.interceptor';
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptorsFromDi()), // supporto HttpClient + interceptor
+    provideHttpClient(withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     importProvidersFrom(CommonModule, ReactiveFormsModule),

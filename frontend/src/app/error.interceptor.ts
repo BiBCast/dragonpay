@@ -21,7 +21,6 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 || error.status === 403) {
-          // Store a flag/message for the popup
           localStorage.setItem(
             'popupMsg',
             'Sessione scaduta. Effettua di nuovo il login.'

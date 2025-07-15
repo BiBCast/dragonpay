@@ -1,4 +1,3 @@
-// src/app/requests/requests.component.ts
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -73,7 +72,6 @@ export class RequestsComponent implements OnInit {
       })
       .subscribe({
         next: (updated) => {
-          // aggiorna stato localmente
           req.status = updated.status;
 
           this.pendingRequests = this.pendingRequests.filter(

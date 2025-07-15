@@ -44,7 +44,6 @@ export class ContactsComponent implements OnInit {
     amount: number;
     currency: string;
   }) {
-    // POST to backend, using event and this.selectedMerchant
     this.closeSendMoneyModal();
   }
 }

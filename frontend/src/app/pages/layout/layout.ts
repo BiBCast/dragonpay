@@ -1,4 +1,3 @@
-// main-layout.ts
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';

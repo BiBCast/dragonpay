@@ -28,9 +28,7 @@ export class RequestCreateComponent implements OnInit {
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit() {
-    // optionally, you could fetch contacts here instead of passing in
-  }
+  ngOnInit() {}
 
   onClose() {
     this.close.emit();

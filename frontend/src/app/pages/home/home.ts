@@ -1,4 +1,3 @@
-// home.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -76,7 +75,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getWallet().subscribe((wallet) => {
-      // Example: populate stats from wallet
       this.stats = [
         {
           title: 'Total Balance',
@@ -106,7 +104,6 @@ export class HomeComponent implements OnInit {
           trend: '-2.3%',
           trendUp: false,
         },
-        // ...other stats as needed
       ];
     });
 
@@ -129,19 +126,16 @@ export class HomeComponent implements OnInit {
     console.log('Quick action:', action);
     if (action === 'send') {
       this.router.navigate(['/home/contacts']);
-      //this.openSendMoneyModal(this.merchants[0]); // Example: open modal for first merchant
     } else if (action === 'request') {
       this.router.navigate(['/home/requests']);
-      // Implement request money logic
     } else if (action === 'wallet') {
       this.router.navigate(['/home/wallet']);
-      // Implement top up wallet logic
     }
   }
 
   toTransactions() {
     console.log('View all transactions');
-    // Navigate to transactions page
+
     this.router.navigate(['/home/transactions']);
   }
 
@@ -190,7 +184,6 @@ export class HomeComponent implements OnInit {
     amount: number;
     currency: string;
   }) {
-    // POST to backend, using event and this.selectedMerchant
     this.closeSendMoneyModal();
   }
 }

@@ -127,7 +127,7 @@ export class SendMoneyModalComponent implements OnInit {
   @Input() show = false;
   @Input() contact = '';
   @Input() readonlyContact = false;
-  @Input() useUserSelect = false; // new flag
+  @Input() useUserSelect = false;
   @Output() close = new EventEmitter<void>();
   @Output() success = new EventEmitter<{
     contact: string;
@@ -135,7 +135,7 @@ export class SendMoneyModalComponent implements OnInit {
     currency: string;
   }>();
 
-  contacts: Contact[] = []; // loaded users
+  contacts: Contact[] = [];
   amount = 0;
   currency = 'EUR';
   loading = false;
@@ -154,12 +154,10 @@ export class SendMoneyModalComponent implements OnInit {
   }
 
   private fetchContacts() {
-    this.http
-      .get<Contact[]>('http://localhost:8000/contacts') // your endpoint
-      .subscribe({
-        next: (list) => (this.contacts = list),
-        error: () => (this.error = 'Could not load users'),
-      });
+    this.http.get<Contact[]>('http://localhost:8000/contacts').subscribe({
+      next: (list) => (this.contacts = list),
+      error: () => (this.error = 'Could not load users'),
+    });
   }
 
   submit() {
