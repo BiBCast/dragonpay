@@ -66,15 +66,31 @@ L’applicazione sarà disponibile su `http://localhost:4200`.
 
 2. Esegui lo script di setup per preparare l’ambiente Python e installare le dipendenze:
 
-   ```bash
-   ./setup.bat
-   ```
+   - Su macOS/Linux:
+
+     ```bash
+     ./setup.sh
+     ```
+
+   - Su Windows (PowerShell):
+
+     ```powershell
+     .\setup.bat
+     ```
 
 3. Attiva l’ambiente virtuale creato dallo script:
 
-   ```bash
-   source .venv/bin/activate
-   ```
+   - macOS/Linux:
+
+     ```bash
+     source .venv/bin/activate
+     ```
+
+   - Windows (PowerShell):
+
+     ```powershell
+     .\.venv\Scripts\Activate.ps1
+     ```
 
 4. Avvia il server Flask:
 
@@ -94,10 +110,8 @@ Il backend sarà in ascolto su `http://localhost:8000` e fornirà la documentazi
 
 ---
 
-**Nota:**
+## Informazioni aggiuntive
 
-Ogni volta che il backend viene modificato, ricorda di rigenerare i tipi TypeScript nel frontend eseguendo nuovamente:
-
-```bash
-npm run gen:api
-```
+- Diagramma UML: [uml.puml](https://github.com/BiBCast/satispay/blob/main/uml.puml)
+- Diagramma ER: [ER.puml](https://github.com/BiBCast/satispay/blob/main/ER.puml)
+- Documentazione Swagger: [swagger.json](https://github.com/BiBCast/satispay/blob/main/swagger.json)
