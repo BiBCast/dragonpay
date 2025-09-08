@@ -8,7 +8,13 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_restx import Api, Resource, fields
 from werkzeug.security import generate_password_hash, check_password_hash
-
+#####################################################################################   
+#UTENZE DI TEST
+#user   password 
+#alice  alice
+#mario  mario
+#luca   luca
+#######################################################################################
 # --- App Setup ---
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:4200"])
