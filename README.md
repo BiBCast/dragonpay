@@ -26,37 +26,7 @@ cd satispay
 
 ---
 
-## 2. Installazione e avvio del frontend
-
-1. Spostati nella cartella del frontend:
-
-   ```bash
-   cd frontend
-   ```
-
-2. Installa le dipendenze Node:
-
-   ```bash
-   npm install
-   ```
-
-3. Genera i tipi TypeScript a partire dallo schema OpenAPI esposto dal backend:
-
-   ```bash
-   npm run gen:api
-   ```
-
-4. Avvia l’applicazione Angular in modalità di sviluppo:
-
-   ```bash
-   npm run start
-   ```
-
-L’applicazione sarà disponibile su `http://localhost:4200`.
-
----
-
-## 3. Installazione e avvio del backend
+## 2. Installazione e avvio del backend
 
 1. Apri un secondo terminale e spostati nella cartella del backend:
 
@@ -99,6 +69,35 @@ L’applicazione sarà disponibile su `http://localhost:4200`.
    ```
 
 Il backend sarà in ascolto su `http://localhost:8000` e fornirà la documentazione Swagger UI su `http://localhost:8000/docs`.
+
+---
+## 3. Installazione e avvio del frontend
+
+1. Apri un secondo terminale e spostati nella cartella del frontend:
+
+   ```bash
+   cd frontend
+   ```
+
+3. Installa le dipendenze Node:
+
+   ```bash
+   npm install
+   ```
+
+4. Genera i tipi TypeScript a partire dallo schema OpenAPI esposto dal backend:
+
+   ```bash
+   npm run gen:api
+   ```
+
+5. Avvia l’applicazione Angular in modalità di sviluppo:
+
+   ```bash
+   npm run start
+   ```
+
+L’applicazione sarà disponibile su `http://localhost:4200`.
 
 ---
 
