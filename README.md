@@ -1,3 +1,15 @@
+# Indice
+
+- [Installazione dell’applicativo Full‑Stack](#installazione-dellapplicativo-full‑stack)
+  - [Prerequisiti](#prerequisiti)
+  - [1. Clonazione del repository](#1-clonazione-del-repository)
+  - [2. Installazione e avvio del backend](#2-installazione-e-avvio-del-backend)
+  - [3. Installazione e avvio del frontend](#3-installazione-e-avvio-del-frontend)
+  - [4. Verifica del funzionamento](#4-verifica-del-funzionamento)
+  - [Informazioni aggiuntive](#informazioni-aggiuntive)
+
+---
+
 # Installazione dell’applicativo Full‑Stack
 
 Questa guida descrive i passaggi per preparare e avviare sia il frontend Angular sia il backend Python/Flask del progetto.
@@ -114,3 +126,4 @@ L’applicazione sarà disponibile su `http://localhost:4200`.
 - Diagramma UML: [uml.puml](https://github.com/BiBCast/satispay/blob/main/uml.puml)
 - Diagramma ER: [ER.puml](https://github.com/BiBCast/satispay/blob/main/ER.puml)
 - Documentazione Swagger: [swagger.json](https://github.com/BiBCast/satispay/blob/main/swagger.json)
+
