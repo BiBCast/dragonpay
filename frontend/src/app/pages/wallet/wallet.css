@@ -7,12 +7,12 @@
 .balance-amount {
   font-size: 48px;
   font-weight: 700;
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
   margin-bottom: 8px;
 }
 
 .balance-label {
-  color: var(--satispay-gray-600);
+  color: var(--dragonpay-gray-600);
   font-size: 18px;
 }
 
@@ -29,24 +29,24 @@
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 2px solid var(--satispay-orange);
+  border: 2px solid var(--dragonpay-orange);
 }
 
 .wallet-btn.primary {
-  background: var(--satispay-orange);
-  color: var(--satispay-white);
+  background: var(--dragonpay-orange);
+  color: var(--dragonpay-white);
 }
 
 .wallet-btn.primary:hover {
-  background: var(--satispay-orange-dark);
+  background: var(--dragonpay-orange-dark);
 }
 
 .wallet-btn.secondary {
   background: transparent;
-  color: var(--satispay-orange);
+  color: var(--dragonpay-orange);
 }
 
 .wallet-btn.secondary:hover {
-  background: var(--satispay-orange);
-  color: var(--satispay-white);
+  background: var(--dragonpay-orange);
+  color: var(--dragonpay-white);
 }

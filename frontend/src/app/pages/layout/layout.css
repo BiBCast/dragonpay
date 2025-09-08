@@ -1,28 +1,28 @@
-/* main-layout.css - Satispay Theme */
+/* main-layout.css - dragonpay Theme */
 
 :host {
-  --satispay-orange: #ff7900;
-  --satispay-orange-light: #ffb366;
-  --satispay-orange-dark: #e66a00;
-  --satispay-gray-50: #fafafa;
-  --satispay-gray-100: #f5f5f5;
-  --satispay-gray-200: #eeeeee;
-  --satispay-gray-300: #e0e0e0;
-  --satispay-gray-400: #bdbdbd;
-  --satispay-gray-500: #9e9e9e;
-  --satispay-gray-600: #757575;
-  --satispay-gray-700: #616161;
-  --satispay-gray-800: #424242;
-  --satispay-gray-900: #212121;
-  --satispay-white: #ffffff;
-  --satispay-black: #000000;
-  --satispay-success: #4caf50;
-  --satispay-error: #f44336;
-  --satispay-warning: #ff9800;
-  --satispay-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --satispay-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
-  --satispay-border-radius: 12px;
-  --satispay-border-radius-sm: 8px;
+  --dragonpay-orange: #ff7900;
+  --dragonpay-orange-light: #ffb366;
+  --dragonpay-orange-dark: #e66a00;
+  --dragonpay-gray-50: #fafafa;
+  --dragonpay-gray-100: #f5f5f5;
+  --dragonpay-gray-200: #eeeeee;
+  --dragonpay-gray-300: #e0e0e0;
+  --dragonpay-gray-400: #bdbdbd;
+  --dragonpay-gray-500: #9e9e9e;
+  --dragonpay-gray-600: #757575;
+  --dragonpay-gray-700: #616161;
+  --dragonpay-gray-800: #424242;
+  --dragonpay-gray-900: #212121;
+  --dragonpay-white: #ffffff;
+  --dragonpay-black: #000000;
+  --dragonpay-success: #4caf50;
+  --dragonpay-error: #f44336;
+  --dragonpay-warning: #ff9800;
+  --dragonpay-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --dragonpay-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --dragonpay-border-radius: 12px;
+  --dragonpay-border-radius-sm: 8px;
   --sidebar-width: 280px;
   --sidebar-collapsed-width: 72px;
   --header-height: 64px;
@@ -36,18 +36,18 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--satispay-gray-50);
+  background: var(--dragonpay-gray-50);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, sans-serif;
 }
 
 .header {
-  background: var(--satispay-white);
+  background: var(--dragonpay-white);
   height: var(--header-height);
-  box-shadow: var(--satispay-shadow);
+  box-shadow: var(--dragonpay-shadow);
   position: relative;
   z-index: 1000;
-  border-bottom: 1px solid var(--satispay-gray-200);
+  border-bottom: 1px solid var(--dragonpay-gray-200);
 }
 
 .header-content {
@@ -79,7 +79,7 @@
 .hamburger-line {
   width: 100%;
   height: 2px;
-  background: var(--satispay-gray-700);
+  background: var(--dragonpay-gray-700);
   border-radius: 2px;
   transition: all 0.3s ease;
 }
@@ -95,14 +95,14 @@
   height: 36px;
   background: linear-gradient(
     135deg,
-    var(--satispay-orange),
-    var(--satispay-orange-light)
+    var(--dragonpay-orange),
+    var(--dragonpay-orange-light)
   );
-  border-radius: var(--satispay-border-radius-sm);
+  border-radius: var(--dragonpay-border-radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--satispay-white);
+  color: var(--dragonpay-white);
   font-weight: 700;
   font-size: 18px;
 }
@@ -111,11 +111,11 @@
   margin: 0;
   font-size: 24px;
   font-weight: 700;
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
   background: linear-gradient(
     135deg,
-    var(--satispay-orange),
-    var(--satispay-orange-dark)
+    var(--dragonpay-orange),
+    var(--dragonpay-orange-dark)
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -135,18 +135,18 @@
   padding: 8px 16px;
   background: transparent;
   border: none;
-  border-radius: var(--satispay-border-radius);
+  border-radius: var(--dragonpay-border-radius);
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
-  color: var(--satispay-gray-700);
+  color: var(--dragonpay-gray-700);
   font-size: 14px;
   font-weight: 500;
 }
 
 .nav-button:hover {
-  background: var(--satispay-gray-100);
-  color: var(--satispay-orange);
+  background: var(--dragonpay-gray-100);
+  color: var(--dragonpay-orange);
 }
 
 .nav-button .nav-icon {
@@ -157,8 +157,8 @@
   position: absolute;
   top: 4px;
   right: 8px;
-  background: var(--satispay-orange);
-  color: var(--satispay-white);
+  background: var(--dragonpay-orange);
+  color: var(--dragonpay-white);
   border-radius: 10px;
   padding: 2px 6px;
   font-size: 11px;
@@ -175,14 +175,14 @@
 
 .sidebar {
   width: var(--sidebar-width);
-  background: var(--satispay-white);
-  box-shadow: var(--satispay-shadow);
+  background: var(--dragonpay-white);
+  box-shadow: var(--dragonpay-shadow);
   display: flex;
   flex-direction: column;
   transition: width 0.3s ease;
   position: relative;
   z-index: 100;
-  border-right: 1px solid var(--satispay-gray-200);
+  border-right: 1px solid var(--dragonpay-gray-200);
 }
 
 .sidebar.collapsed {
@@ -200,28 +200,28 @@
   align-items: center;
   gap: 16px;
   padding: 12px 24px;
-  color: var(--satispay-gray-700);
+  color: var(--dragonpay-gray-700);
   text-decoration: none;
   transition: all 0.2s ease;
   position: relative;
   margin: 0 12px;
-  border-radius: var(--satispay-border-radius);
+  border-radius: var(--dragonpay-border-radius);
   font-weight: 500;
 }
 
 .nav-link:hover {
-  background: var(--satispay-gray-100);
-  color: var(--satispay-orange);
+  background: var(--dragonpay-gray-100);
+  color: var(--dragonpay-orange);
 }
 
 .nav-link.active {
   background: linear-gradient(
     135deg,
-    var(--satispay-orange),
-    var(--satispay-orange-light)
+    var(--dragonpay-orange),
+    var(--dragonpay-orange-light)
   );
-  color: var(--satispay-white);
-  box-shadow: var(--satispay-shadow);
+  color: var(--dragonpay-white);
+  box-shadow: var(--dragonpay-shadow);
 }
 
 .nav-link .nav-icon {
@@ -247,7 +247,7 @@
 
 .sidebar-footer {
   padding: 16px;
-  border-top: 1px solid var(--satispay-gray-200);
+  border-top: 1px solid var(--dragonpay-gray-200);
 }
 
 .user-info {
@@ -262,14 +262,14 @@
   height: 40px;
   background: linear-gradient(
     135deg,
-    var(--satispay-orange),
-    var(--satispay-orange-light)
+    var(--dragonpay-orange),
+    var(--dragonpay-orange-light)
   );
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--satispay-white);
+  color: var(--dragonpay-white);
   font-weight: 600;
   font-size: 16px;
   flex-shrink: 0;
@@ -282,14 +282,14 @@
 
 .user-name {
   font-weight: 600;
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
   font-size: 14px;
   margin-bottom: 2px;
 }
 
 .user-email {
   font-size: 12px;
-  color: var(--satispay-gray-500);
+  color: var(--dragonpay-gray-500);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -298,7 +298,7 @@
 /* Content Area */
 .content {
   flex: 1;
-  background: var(--satispay-gray-50);
+  background: var(--dragonpay-gray-50);
   overflow-y: auto;
   padding: 24px;
 }
@@ -406,7 +406,7 @@
 .nav-button:focus,
 .nav-link:focus,
 .menu-toggle:focus {
-  outline: 2px solid var(--satispay-orange);
+  outline: 2px solid var(--dragonpay-orange);
   outline-offset: 2px;
 }
 
@@ -424,16 +424,16 @@
 
 .sidebar-nav::-webkit-scrollbar-track,
 .content::-webkit-scrollbar-track {
-  background: var(--satispay-gray-100);
+  background: var(--dragonpay-gray-100);
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb,
 .content::-webkit-scrollbar-thumb {
-  background: var(--satispay-gray-400);
+  background: var(--dragonpay-gray-400);
   border-radius: 3px;
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb:hover,
 .content::-webkit-scrollbar-thumb:hover {
-  background: var(--satispay-gray-500);
+  background: var(--dragonpay-gray-500);
 }

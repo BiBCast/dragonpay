@@ -9,72 +9,72 @@
 }
 
 .merchant-item {
-  background: var(--satispay-white);
-  border: 2px solid var(--satispay-gray-200);
-  border-radius: var(--satispay-border-radius);
+  background: var(--dragonpay-white);
+  border: 2px solid var(--dragonpay-gray-200);
+  border-radius: var(--dragonpay-border-radius);
   padding: 20px 24px;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  box-shadow: var(--satispay-shadow);
+  box-shadow: var(--dragonpay-shadow);
 }
 
 .merchant-item:hover {
-  border-color: var(--satispay-orange);
+  border-color: var(--dragonpay-orange);
   background: linear-gradient(
     135deg,
-    var(--satispay-orange),
-    var(--satispay-orange-light)
+    var(--dragonpay-orange),
+    var(--dragonpay-orange-light)
   );
-  color: var(--satispay-white);
+  color: var(--dragonpay-white);
   transform: translateY(-2px);
-  box-shadow: var(--satispay-shadow-lg);
+  box-shadow: var(--dragonpay-shadow-lg);
 }
 
 .merchant-name {
   font-size: 18px;
   font-weight: 600;
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
   margin-bottom: 4px;
 }
 
 .merchant-item:hover .merchant-name {
-  color: var(--satispay-white);
+  color: var(--dragonpay-white);
 }
 
 .merchant-code {
   font-size: 14px;
-  color: var(--satispay-gray-500);
+  color: var(--dragonpay-gray-500);
 }
 
 .merchant-item:hover .merchant-code {
-  color: var(--satispay-white);
+  color: var(--dragonpay-white);
 }
-/* home.css - Satispay Theme */
+/* home.css - dragonpay Theme */
 
 :host {
-  --satispay-orange: #ff7900;
-  --satispay-orange-light: #ffb366;
-  --satispay-orange-dark: #e66a00;
-  --satispay-gray-50: #fafafa;
-  --satispay-gray-100: #f5f5f5;
-  --satispay-gray-200: #eeeeee;
-  --satispay-gray-300: #e0e0e0;
-  --satispay-gray-400: #bdbdbd;
-  --satispay-gray-500: #9e9e9e;
-  --satispay-gray-600: #757575;
-  --satispay-gray-700: #616161;
-  --satispay-gray-800: #424242;
-  --satispay-gray-900: #212121;
-  --satispay-white: #ffffff;
-  --satispay-success: #4caf50;
-  --satispay-error: #f44336;
-  --satispay-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --satispay-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
-  --satispay-border-radius: 12px;
-  --satispay-border-radius-sm: 8px;
+  --dragonpay-orange: #ff7900;
+  --dragonpay-orange-light: #ffb366;
+  --dragonpay-orange-dark: #e66a00;
+  --dragonpay-gray-50: #fafafa;
+  --dragonpay-gray-100: #f5f5f5;
+  --dragonpay-gray-200: #eeeeee;
+  --dragonpay-gray-300: #e0e0e0;
+  --dragonpay-gray-400: #bdbdbd;
+  --dragonpay-gray-500: #9e9e9e;
+  --dragonpay-gray-600: #757575;
+  --dragonpay-gray-700: #616161;
+  --dragonpay-gray-800: #424242;
+  --dragonpay-gray-900: #212121;
+  --dragonpay-white: #ffffff;
+  --dragonpay-success: #4caf50;
+  --dragonpay-error: #f44336;
+  --dragonpay-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --dragonpay-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --dragonpay-border-radius: 12px;
+  --dragonpay-border-radius-sm: 8px;
 }
 
 .home-container {
@@ -86,17 +86,17 @@
 .welcome-section {
   background: linear-gradient(
     135deg,
-    var(--satispay-orange),
-    var(--satispay-orange-light)
+    var(--dragonpay-orange),
+    var(--dragonpay-orange-light)
   );
   padding: 32px;
-  border-radius: var(--satispay-border-radius);
+  border-radius: var(--dragonpay-border-radius);
   margin-bottom: 32px;
-  color: var(--satispay-white);
+  color: var(--dragonpay-white);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: var(--satispay-shadow-lg);
+  box-shadow: var(--dragonpay-shadow-lg);
   position: relative;
   overflow: hidden;
 }
@@ -149,19 +149,19 @@
 }
 
 .stat-card {
-  background: var(--satispay-white);
+  background: var(--dragonpay-white);
   padding: 24px;
-  border-radius: var(--satispay-border-radius);
-  box-shadow: var(--satispay-shadow);
+  border-radius: var(--dragonpay-border-radius);
+  box-shadow: var(--dragonpay-shadow);
   transition: all 0.3s ease;
-  border: 1px solid var(--satispay-gray-200);
+  border: 1px solid var(--dragonpay-gray-200);
   position: relative;
   overflow: hidden;
 }
 
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--satispay-shadow-lg);
+  box-shadow: var(--dragonpay-shadow-lg);
 }
 
 .stat-header {
@@ -180,10 +180,10 @@
   height: 56px;
   background: linear-gradient(
     135deg,
-    var(--satispay-gray-100),
-    var(--satispay-gray-200)
+    var(--dragonpay-gray-100),
+    var(--dragonpay-gray-200)
   );
-  border-radius: var(--satispay-border-radius);
+  border-radius: var(--dragonpay-border-radius);
 }
 
 .stat-trend {
@@ -195,12 +195,12 @@
 
 .stat-trend.positive {
   background: rgba(76, 175, 80, 0.1);
-  color: var(--satispay-success);
+  color: var(--dragonpay-success);
 }
 
 .stat-trend.negative {
   background: rgba(244, 67, 54, 0.1);
-  color: var(--satispay-error);
+  color: var(--dragonpay-error);
 }
 
 .stat-content {
@@ -210,12 +210,12 @@
 .stat-value {
   font-size: 28px;
   font-weight: 700;
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
   margin-bottom: 4px;
 }
 
 .stat-title {
-  color: var(--satispay-gray-600);
+  color: var(--dragonpay-gray-600);
   font-size: 16px;
   font-weight: 500;
 }
@@ -227,7 +227,7 @@
 .section-title {
   font-size: 24px;
   font-weight: 700;
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
   margin: 0 0 20px 0;
 }
 
@@ -238,9 +238,9 @@
 }
 
 .action-button {
-  background: var(--satispay-white);
-  border: 2px solid var(--satispay-gray-200);
-  border-radius: var(--satispay-border-radius);
+  background: var(--dragonpay-white);
+  border: 2px solid var(--dragonpay-gray-200);
+  border-radius: var(--dragonpay-border-radius);
   padding: 24px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -252,15 +252,15 @@
 }
 
 .action-button:hover {
-  border-color: var(--satispay-orange);
+  border-color: var(--dragonpay-orange);
   background: linear-gradient(
     135deg,
-    var(--satispay-orange),
-    var(--satispay-orange-light)
+    var(--dragonpay-orange),
+    var(--dragonpay-orange-light)
   );
-  color: var(--satispay-white);
+  color: var(--dragonpay-white);
   transform: translateY(-2px);
-  box-shadow: var(--satispay-shadow-lg);
+  box-shadow: var(--dragonpay-shadow-lg);
 }
 
 .action-icon {
@@ -271,11 +271,11 @@
 .action-title {
   font-size: 16px;
   font-weight: 600;
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
 }
 
 .action-button:hover .action-title {
-  color: var(--satispay-white);
+  color: var(--dragonpay-white);
 }
 
 /* Transactions Section */
@@ -292,8 +292,8 @@
 
 .view-all-btn {
   background: transparent;
-  border: 2px solid var(--satispay-orange);
-  color: var(--satispay-orange);
+  border: 2px solid var(--dragonpay-orange);
+  color: var(--dragonpay-orange);
   padding: 8px 20px;
   border-radius: 24px;
   cursor: pointer;
@@ -303,14 +303,14 @@
 }
 
 .view-all-btn:hover {
-  background: var(--satispay-orange);
-  color: var(--satispay-white);
+  background: var(--dragonpay-orange);
+  color: var(--dragonpay-white);
 }
 
 .transactions-list {
-  background: var(--satispay-white);
-  border-radius: var(--satispay-border-radius);
-  box-shadow: var(--satispay-shadow);
+  background: var(--dragonpay-white);
+  border-radius: var(--dragonpay-border-radius);
+  box-shadow: var(--dragonpay-shadow);
   overflow: hidden;
 }
 
@@ -318,7 +318,7 @@
   display: flex;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid var(--satispay-gray-200);
+  border-bottom: 1px solid var(--dragonpay-gray-200);
   transition: background-color 0.2s ease;
 }
 
@@ -327,7 +327,7 @@
 }
 
 .transaction-item:hover {
-  background: var(--satispay-gray-50);
+  background: var(--dragonpay-gray-50);
 }
 
 .transaction-icon {
@@ -338,7 +338,7 @@
   justify-content: center;
   width: 48px;
   height: 48px;
-  background: var(--satispay-gray-100);
+  background: var(--dragonpay-gray-100);
   border-radius: 50%;
 }
 
@@ -348,13 +348,13 @@
 
 .transaction-merchant {
   font-weight: 600;
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
   font-size: 16px;
   margin-bottom: 4px;
 }
 
 .transaction-date {
-  color: var(--satispay-gray-500);
+  color: var(--dragonpay-gray-500);
   font-size: 14px;
 }
 
@@ -364,11 +364,11 @@
 }
 
 .transaction-amount.positive {
-  color: var(--satispay-success);
+  color: var(--dragonpay-success);
 }
 
 .transaction-amount.negative {
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
 }
 
 .tips-section {
@@ -378,16 +378,16 @@
 .tip-card {
   background: linear-gradient(
     135deg,
-    var(--satispay-gray-100),
-    var(--satispay-gray-200)
+    var(--dragonpay-gray-100),
+    var(--dragonpay-gray-200)
   );
   padding: 24px;
-  border-radius: var(--satispay-border-radius);
+  border-radius: var(--dragonpay-border-radius);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 24px;
-  border-left: 4px solid var(--satispay-orange);
+  border-left: 4px solid var(--dragonpay-orange);
 }
 
 .tip-content {
@@ -397,20 +397,20 @@
 .tip-title {
   font-size: 20px;
   font-weight: 600;
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
   margin: 0 0 8px 0;
 }
 
 .tip-description {
-  color: var(--satispay-gray-700);
+  color: var(--dragonpay-gray-700);
   font-size: 16px;
   line-height: 1.5;
   margin: 0;
 }
 
 .tip-action {
-  background: var(--satispay-orange);
-  color: var(--satispay-white);
+  background: var(--dragonpay-orange);
+  color: var(--dragonpay-white);
   border: none;
   padding: 12px 24px;
   border-radius: 24px;
@@ -422,7 +422,7 @@
 }
 
 .tip-action:hover {
-  background: var(--satispay-orange-dark);
+  background: var(--dragonpay-orange-dark);
   transform: translateY(-2px);
 }
 

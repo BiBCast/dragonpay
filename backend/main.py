@@ -29,8 +29,8 @@ authorizations = {
 api = Api(
     app,
     version='1.0',
-    title='Mock Satispay API',
-    description='API RESTful con Swagger UI per Satispay simulation',
+    title='Mock dragonpay API',
+    description='API RESTful con Swagger UI per dragonpay simulation',
     doc='/docs',
     authorizations=authorizations,
     security='BearerAuth'
@@ -118,7 +118,7 @@ decision_model = api.model('RequestDecision', {
 })
 
 # --- DB Helper ---
-DB_PATH = './satispay.db'
+DB_PATH = './dragonpay.db'
 
 def get_db_connection():
     conn = sqlite3.connect(DB_PATH)
@@ -332,7 +332,7 @@ class SendMoney(Resource):
         if not contact or amount is None or amount <= 0 or not currency:
             return {'message': 'Invalid input data'}, 400
 
-        db_path = os.path.join(os.path.dirname(__file__), 'satispay.db')
+        db_path = os.path.join(os.path.dirname(__file__), 'dragonpay.db')
         conn    = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
 

@@ -35,8 +35,8 @@ Prima di procedere, assicurati di avere installato:
 Apri un terminale e esegui i comandi seguenti per clonare il repository e posizionarti nella cartella di progetto:
 
 ```bash
-git clone https://github.com/BiBCast/satispay.git
-cd satispay
+git clone https://github.com/BiBCast/dragonpay.git
+cd dragonpay
 ```
 
 ## 2. Installazione e avvio del backend
@@ -121,9 +121,9 @@ L'applicazione sarà disponibile su `http://localhost:4200`.
 
 # Link utili
 
-- Diagramma UML: [uml.puml](https://github.com/BiBCast/satispay/blob/main/uml.puml)
-- Diagramma ER: [ER.puml](https://github.com/BiBCast/satispay/blob/main/ER.puml)
-- Documentazione Swagger: [swagger.json](https://github.com/BiBCast/satispay/blob/main/swagger.json)
+- Diagramma UML: [uml.puml](https://github.com/BiBCast/dragonpay/blob/main/uml.puml)
+- Diagramma ER: [ER.puml](https://github.com/BiBCast/dragonpay/blob/main/ER.puml)
+- Documentazione Swagger: [swagger.json](https://github.com/BiBCast/dragonpay/blob/main/swagger.json)
 
 ---
 
@@ -226,7 +226,6 @@ Per rispettare vincoli temporali e didattici, ho adottato scelte progettuali sem
 
 ## 4. Conclusione
 
-L' elaborato è stato progettato con una base estendibile e un piano di evoluzione ben chiaro ,questo approccio permette di avere un prodotto con basi solide e facilemente estendibile potendo realisticamente avere un prodotto finito professionale e appetibile al mercato. 
-
+L' elaborato è stato progettato con una base estendibile e un piano di evoluzione ben chiaro ,questo approccio permette di avere un prodotto con basi solide e facilemente estendibile potendo realisticamente avere un prodotto finito professionale e appetibile al mercato.
 
 ---

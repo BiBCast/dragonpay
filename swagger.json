@@ -1,734 +1,666 @@
 {
-    "swagger": "2.0",
-    "basePath": "/",
-    "paths": {
-        "/auth/login": {
-            "post": {
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                },
-                "operationId": "post_login",
-                "parameters": [
-                    {
-                        "name": "payload",
-                        "required": true,
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/Login"
-                        }
-                    }
-                ],
-                "tags": [
-                    "auth"
-                ]
-            }
+  "swagger": "2.0",
+  "basePath": "/",
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
         },
-        "/contacts": {
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Contact"
-                            }
-                        }
-                    }
-                },
-                "operationId": "get_contacts_list",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "contacts"
-                ]
+        "operationId": "post_login",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Login"
             }
-        },
-        "/hello": {
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                },
-                "operationId": "get_hello",
-                "tags": [
-                    "default"
-                ]
-            }
-        },
-        "/merchants": {
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Merchant"
-                            }
-                        }
-                    }
-                },
-                "operationId": "get_merch_list",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "merchants"
-                ]
-            }
-        },
-        "/requests": {
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/PaymentRequestWithUser"
-                            }
-                        }
-                    }
-                },
-                "operationId": "get_req_list",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "requests"
-                ]
-            }
-        },
-        "/requests/create": {
-            "post": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/PaymentRequest"
-                        }
-                    }
-                },
-                "summary": "Create a new payment request\u2014current user is the requester",
-                "operationId": "post_req_create",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "requests"
-                ]
-            }
-        },
-        "/requests/decision": {
-            "put": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/PaymentRequest"
-                        }
-                    }
-                },
-                "summary": "Accept or decline a pending payment request",
-                "operationId": "put_req_decision",
-                "parameters": [
-                    {
-                        "name": "payload",
-                        "required": true,
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/RequestDecision"
-                        }
-                    },
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "requests"
-                ]
-            }
-        },
-        "/transactions": {
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Transaction"
-                            }
-                        }
-                    }
-                },
-                "operationId": "get_transactions",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "transactions"
-                ]
-            }
-        },
-        "/users": {
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/User"
-                            }
-                        }
-                    }
-                },
-                "operationId": "get_all_users",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "users"
-                ]
-            }
-        },
-        "/users/me": {
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                },
-                "operationId": "get_current_user",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "users"
-                ]
-            }
-        },
-        "/wallet": {
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/Account"
-                        }
-                    }
-                },
-                "operationId": "get_wallet",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "wallet"
-                ]
-            }
-        },
-        "/wallet/sendMoney": {
-            "post": {
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                },
-                "summary": "Transfer money from the authenticated user to another user or to a merchant",
-                "operationId": "post_send_money",
-                "parameters": [
-                    {
-                        "name": "payload",
-                        "required": true,
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/SendMoneyRequest"
-                        }
-                    }
-                ],
-                "tags": [
-                    "wallet"
-                ]
-            }
-        },
-        "/wallet/test": {
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/Account"
-                        }
-                    }
-                },
-                "summary": "Restituisce il conto dell'utente",
-                "operationId": "get_wallet_test",
-                "parameters": [
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
-                    }
-                ],
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "tags": [
-                    "wallet"
-                ]
-            }
-        },
-        "/wallet/topup": {
-            "post": {
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                },
-                "operationId": "post_top_up",
-                "parameters": [
-                    {
-                        "name": "payload",
-                        "required": true,
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/TopUpRequest"
-                        }
-                    }
-                ],
-                "tags": [
-                    "wallet"
-                ]
-            }
-        }
+          }
+        ],
+        "tags": ["auth"]
+      }
     },
-    "info": {
-        "title": "Mock Satispay API",
-        "version": "1.0",
-        "description": "API RESTful con Swagger UI per Satispay simulation"
-    },
-    "produces": [
-        "application/json"
-    ],
-    "consumes": [
-        "application/json"
-    ],
-    "securityDefinitions": {
-        "BearerAuth": {
-            "type": "apiKey",
+    "/contacts": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Contact"
+              }
+            }
+          }
+        },
+        "operationId": "get_contacts_list",
+        "parameters": [
+          {
+            "name": "X-Fields",
             "in": "header",
-            "name": "Authorization",
-            "description": "Inserisci: **Bearer <JWT>**"
-        }
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": ["contacts"]
+      }
     },
-    "security": [
-        {
+    "/hello": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "get_hello",
+        "tags": ["default"]
+      }
+    },
+    "/merchants": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Merchant"
+              }
+            }
+          }
+        },
+        "operationId": "get_merch_list",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": ["merchants"]
+      }
+    },
+    "/requests": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PaymentRequestWithUser"
+              }
+            }
+          }
+        },
+        "operationId": "get_req_list",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": ["requests"]
+      }
+    },
+    "/requests/create": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PaymentRequest"
+            }
+          }
+        },
+        "summary": "Create a new payment request\u2014current user is the requester",
+        "operationId": "post_req_create",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": ["requests"]
+      }
+    },
+    "/requests/decision": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/PaymentRequest"
+            }
+          }
+        },
+        "summary": "Accept or decline a pending payment request",
+        "operationId": "put_req_decision",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/RequestDecision"
+            }
+          },
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": ["requests"]
+      }
+    },
+    "/transactions": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Transaction"
+              }
+            }
+          }
+        },
+        "operationId": "get_transactions",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": ["transactions"]
+      }
+    },
+    "/users": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        },
+        "operationId": "get_all_users",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": ["users"]
+      }
+    },
+    "/users/me": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "operationId": "get_current_user",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": ["users"]
+      }
+    },
+    "/wallet": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Account"
+            }
+          }
+        },
+        "operationId": "get_wallet",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "tags": ["wallet"]
+      }
+    },
+    "/wallet/sendMoney": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Transfer money from the authenticated user to another user or to a merchant",
+        "operationId": "post_send_money",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/SendMoneyRequest"
+            }
+          }
+        ],
+        "tags": ["wallet"]
+      }
+    },
+    "/wallet/test": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Account"
+            }
+          }
+        },
+        "summary": "Restituisce il conto dell'utente",
+        "operationId": "get_wallet_test",
+        "parameters": [
+          {
+            "name": "X-Fields",
+            "in": "header",
+            "type": "string",
+            "format": "mask",
+            "description": "An optional fields mask"
+          }
+        ],
+        "security": [
+          {
             "BearerAuth": []
-        }
-    ],
-    "tags": [
-        {
-            "name": "default",
-            "description": "Default namespace"
-        },
-        {
-            "name": "auth",
-            "description": "Autenticazione"
-        },
-        {
-            "name": "wallet",
-            "description": "Gestione conto"
-        },
-        {
-            "name": "users",
-            "description": "Gestione utenti"
-        },
-        {
-            "name": "merchants",
-            "description": "Gestione merchant"
-        },
-        {
-            "name": "contacts",
-            "description": "Gestione contatti"
-        },
-        {
-            "name": "transactions",
-            "description": "Transazioni"
-        },
-        {
-            "name": "requests",
-            "description": "Payment requests"
-        }
-    ],
-    "definitions": {
-        "Login": {
-            "required": [
-                "password",
-                "username"
-            ],
-            "properties": {
-                "username": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "Account": {
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "user_id": {
-                    "type": "integer"
-                },
-                "balance": {
-                    "type": "number"
-                },
-                "currency": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "TopUpRequest": {
-            "required": [
-                "amount",
-                "currency"
-            ],
-            "properties": {
-                "amount": {
-                    "type": "number"
-                },
-                "currency": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "SendMoneyRequest": {
-            "required": [
-                "amount",
-                "contact",
-                "currency"
-            ],
-            "properties": {
-                "contact": {
-                    "type": "string",
-                    "description": "Username, user ID or merchant code"
-                },
-                "amount": {
-                    "type": "number",
-                    "description": "Amount to transfer"
-                },
-                "currency": {
-                    "type": "string",
-                    "description": "Currency code"
-                }
-            },
-            "type": "object"
-        },
-        "User": {
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "username": {
-                    "type": "string"
-                },
-                "full_name": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "password_hash": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "Merchant": {
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "merchant_code": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "Contact": {
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "owner_id": {
-                    "type": "integer"
-                },
-                "contact_id": {
-                    "type": "integer"
-                },
-                "nickname": {
-                    "type": "string"
-                },
-                "added_at": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "Transaction": {
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "account_id": {
-                    "type": "string"
-                },
-                "amount": {
-                    "type": "number"
-                },
-                "currency": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string",
-                    "example": "payment",
-                    "enum": [
-                        "payment",
-                        "request",
-                        "topup",
-                        "payout",
-                        "refund"
-                    ]
-                },
-                "status": {
-                    "type": "string",
-                    "example": "pending",
-                    "enum": [
-                        "pending",
-                        "completed",
-                        "failed"
-                    ]
-                },
-                "related_id": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "PaymentRequestWithUser": {
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "requester_id": {
-                    "type": "integer"
-                },
-                "requestee_id": {
-                    "type": "integer"
-                },
-                "amount": {
-                    "type": "number"
-                },
-                "currency": {
-                    "type": "string"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "pending",
-                    "enum": [
-                        "pending",
-                        "accepted",
-                        "declined",
-                        "expired"
-                    ]
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "expires_at": {
-                    "type": "string"
-                },
-                "other_user": {
-                    "$ref": "#/definitions/UserBrief"
-                }
-            },
-            "type": "object"
-        },
-        "UserBrief": {
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "username": {
-                    "type": "string"
-                },
-                "full_name": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        },
-        "RequestDecision": {
-            "required": [
-                "action",
-                "id"
-            ],
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "action": {
-                    "type": "string",
-                    "example": "accept",
-                    "enum": [
-                        "accept",
-                        "decline"
-                    ]
-                }
-            },
-            "type": "object"
-        },
-        "PaymentRequest": {
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "requester_id": {
-                    "type": "integer"
-                },
-                "requestee_id": {
-                    "type": "integer"
-                },
-                "amount": {
-                    "type": "number"
-                },
-                "currency": {
-                    "type": "string"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "pending",
-                    "enum": [
-                        "pending",
-                        "accepted",
-                        "declined",
-                        "expired"
-                    ]
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "expires_at": {
-                    "type": "string"
-                }
-            },
-            "type": "object"
-        }
+          }
+        ],
+        "tags": ["wallet"]
+      }
     },
-    "responses": {
-        "ParseError": {
-            "description": "When a mask can't be parsed"
+    "/wallet/topup": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
         },
-        "MaskError": {
-            "description": "When any error occurs on mask"
-        }
+        "operationId": "post_top_up",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/TopUpRequest"
+            }
+          }
+        ],
+        "tags": ["wallet"]
+      }
     }
+  },
+  "info": {
+    "title": "Mock dragonpay API",
+    "version": "1.0",
+    "description": "API RESTful con Swagger UI per dragonpay simulation"
+  },
+  "produces": ["application/json"],
+  "consumes": ["application/json"],
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Inserisci: **Bearer <JWT>**"
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "default",
+      "description": "Default namespace"
+    },
+    {
+      "name": "auth",
+      "description": "Autenticazione"
+    },
+    {
+      "name": "wallet",
+      "description": "Gestione conto"
+    },
+    {
+      "name": "users",
+      "description": "Gestione utenti"
+    },
+    {
+      "name": "merchants",
+      "description": "Gestione merchant"
+    },
+    {
+      "name": "contacts",
+      "description": "Gestione contatti"
+    },
+    {
+      "name": "transactions",
+      "description": "Transazioni"
+    },
+    {
+      "name": "requests",
+      "description": "Payment requests"
+    }
+  ],
+  "definitions": {
+    "Login": {
+      "required": ["password", "username"],
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Account": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "user_id": {
+          "type": "integer"
+        },
+        "balance": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TopUpRequest": {
+      "required": ["amount", "currency"],
+      "properties": {
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "SendMoneyRequest": {
+      "required": ["amount", "contact", "currency"],
+      "properties": {
+        "contact": {
+          "type": "string",
+          "description": "Username, user ID or merchant code"
+        },
+        "amount": {
+          "type": "number",
+          "description": "Amount to transfer"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency code"
+        }
+      },
+      "type": "object"
+    },
+    "User": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "username": {
+          "type": "string"
+        },
+        "full_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password_hash": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Merchant": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "merchant_code": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Contact": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "owner_id": {
+          "type": "integer"
+        },
+        "contact_id": {
+          "type": "integer"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "added_at": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Transaction": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "example": "payment",
+          "enum": ["payment", "request", "topup", "payout", "refund"]
+        },
+        "status": {
+          "type": "string",
+          "example": "pending",
+          "enum": ["pending", "completed", "failed"]
+        },
+        "related_id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "PaymentRequestWithUser": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "requester_id": {
+          "type": "integer"
+        },
+        "requestee_id": {
+          "type": "integer"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "example": "pending",
+          "enum": ["pending", "accepted", "declined", "expired"]
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "expires_at": {
+          "type": "string"
+        },
+        "other_user": {
+          "$ref": "#/definitions/UserBrief"
+        }
+      },
+      "type": "object"
+    },
+    "UserBrief": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "username": {
+          "type": "string"
+        },
+        "full_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "RequestDecision": {
+      "required": ["action", "id"],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "action": {
+          "type": "string",
+          "example": "accept",
+          "enum": ["accept", "decline"]
+        }
+      },
+      "type": "object"
+    },
+    "PaymentRequest": {
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "requester_id": {
+          "type": "integer"
+        },
+        "requestee_id": {
+          "type": "integer"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "example": "pending",
+          "enum": ["pending", "accepted", "declined", "expired"]
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "expires_at": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "responses": {
+    "ParseError": {
+      "description": "When a mask can't be parsed"
+    },
+    "MaskError": {
+      "description": "When any error occurs on mask"
+    }
+  }
 }

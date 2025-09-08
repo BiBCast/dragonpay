@@ -10,14 +10,14 @@
   align-items: center;
   gap: 16px;
   padding: 20px;
-  background: var(--satispay-gray-50);
-  border-radius: var(--satispay-border-radius-sm);
+  background: var(--dragonpay-gray-50);
+  border-radius: var(--dragonpay-border-radius-sm);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .support-item:hover {
-  background: var(--satispay-gray-100);
+  background: var(--dragonpay-gray-100);
   transform: translateY(-2px);
 }
 
@@ -28,17 +28,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--satispay-white);
+  background: var(--dragonpay-white);
   border-radius: 50%;
 }
 
 .support-content h3 {
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
   margin: 0 0 4px 0;
   font-size: 18px;
 }
 
 .support-content p {
-  color: var(--satispay-gray-600);
+  color: var(--dragonpay-gray-600);
   margin: 0;
 }

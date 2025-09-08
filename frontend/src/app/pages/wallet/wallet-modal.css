@@ -17,7 +17,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: var(--satispay-white);
+  background: var(--dragonpay-white);
   padding: 32px 24px;
   border-radius: 16px;
   box-shadow: 0 4px 32px rgba(0, 0, 0, 0.15);
@@ -38,7 +38,7 @@
   padding: 8px;
   margin-top: 4px;
   border-radius: 8px;
-  border: 1px solid var(--satispay-gray-200);
+  border: 1px solid var(--dragonpay-gray-200);
   font-size: 16px;
 }
 .modal-actions {
@@ -53,11 +53,11 @@
   border: none;
   font-weight: 600;
   cursor: pointer;
-  background: var(--satispay-orange);
-  color: var(--satispay-white);
+  background: var(--dragonpay-orange);
+  color: var(--dragonpay-white);
   transition: background 0.2s;
 }
 .modal button[type="button"] {
-  background: var(--satispay-gray-200);
-  color: var(--satispay-gray-900);
+  background: var(--dragonpay-gray-200);
+  color: var(--dragonpay-gray-900);
 }

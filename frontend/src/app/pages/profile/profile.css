@@ -12,12 +12,16 @@
 .avatar-circle {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, var(--satispay-orange), var(--satispay-orange-light));
+  background: linear-gradient(
+    135deg,
+    var(--dragonpay-orange),
+    var(--dragonpay-orange-light)
+  );
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--satispay-white);
+  color: var(--dragonpay-white);
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 12px;
@@ -25,8 +29,8 @@
 
 .change-avatar-btn {
   background: transparent;
-  border: 2px solid var(--satispay-orange);
-  color: var(--satispay-orange);
+  border: 2px solid var(--dragonpay-orange);
+  color: var(--dragonpay-orange);
   padding: 8px 16px;
   border-radius: 20px;
   cursor: pointer;
@@ -36,24 +40,24 @@
 }
 
 .change-avatar-btn:hover {
-  background: var(--satispay-orange);
-  color: var(--satispay-white);
+  background: var(--dragonpay-orange);
+  color: var(--dragonpay-white);
 }
 
 .profile-info h2 {
   font-size: 24px;
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
   margin: 0 0 8px 0;
 }
 
 .profile-info p {
-  color: var(--satispay-gray-600);
+  color: var(--dragonpay-gray-600);
   margin: 0 0 12px 0;
 }
 
 .verified-badge {
-  background: var(--satispay-success);
-  color: var(--satispay-white);
+  background: var(--dragonpay-success);
+  color: var(--dragonpay-white);
   padding: 4px 12px;
   border-radius: 16px;
   font-size: 12px;

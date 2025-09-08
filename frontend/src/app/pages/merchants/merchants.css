@@ -9,46 +9,46 @@
 }
 
 .merchant-item {
-  background: var(--satispay-white);
-  border: 2px solid var(--satispay-gray-200);
-  border-radius: var(--satispay-border-radius);
+  background: var(--dragonpay-white);
+  border: 2px solid var(--dragonpay-gray-200);
+  border-radius: var(--dragonpay-border-radius);
   padding: 20px 24px;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  box-shadow: var(--satispay-shadow);
+  box-shadow: var(--dragonpay-shadow);
 }
 
 .merchant-item:hover {
-  border-color: var(--satispay-orange);
+  border-color: var(--dragonpay-orange);
   background: linear-gradient(
     135deg,
-    var(--satispay-orange),
-    var(--satispay-orange-light)
+    var(--dragonpay-orange),
+    var(--dragonpay-orange-light)
   );
-  color: var(--satispay-white);
+  color: var(--dragonpay-white);
   transform: translateY(-2px);
-  box-shadow: var(--satispay-shadow-lg);
+  box-shadow: var(--dragonpay-shadow-lg);
 }
 
 .merchant-name {
   font-size: 18px;
   font-weight: 600;
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
   margin-bottom: 4px;
 }
 
 .merchant-item:hover .merchant-name {
-  color: var(--satispay-white);
+  color: var(--dragonpay-white);
 }
 
 .merchant-code {
   font-size: 14px;
-  color: var(--satispay-gray-500);
+  color: var(--dragonpay-gray-500);
 }
 
 .merchant-item:hover .merchant-code {
-  color: var(--satispay-white);
+  color: var(--dragonpay-white);
 }

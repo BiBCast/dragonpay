@@ -7,20 +7,20 @@
 }
 
 .filter-btn {
-  background: var(--satispay-gray-100);
+  background: var(--dragonpay-gray-100);
   border: none;
   padding: 8px 20px;
   border-radius: 20px;
   cursor: pointer;
   font-weight: 600;
-  color: var(--satispay-gray-700);
+  color: var(--dragonpay-gray-700);
   transition: all 0.3s ease;
 }
 
 .filter-btn.active,
 .filter-btn:hover {
-  background: var(--satispay-orange);
-  color: var(--satispay-white);
+  background: var(--dragonpay-orange);
+  color: var(--dragonpay-white);
 }
 
 .transactions-list {
@@ -33,13 +33,13 @@
   display: flex;
   align-items: center;
   padding: 16px;
-  background: var(--satispay-gray-50);
-  border-radius: var(--satispay-border-radius-sm);
+  background: var(--dragonpay-gray-50);
+  border-radius: var(--dragonpay-border-radius-sm);
   transition: background-color 0.2s ease;
 }
 
 .transaction-item:hover {
-  background: var(--satispay-gray-100);
+  background: var(--dragonpay-gray-100);
 }
 
 .transaction-icon {
@@ -50,7 +50,7 @@
   justify-content: center;
   width: 48px;
   height: 48px;
-  background: var(--satispay-white);
+  background: var(--dragonpay-white);
   border-radius: 50%;
 }
 
@@ -60,12 +60,12 @@
 
 .merchant {
   font-weight: 600;
-  color: var(--satispay-gray-900);
+  color: var(--dragonpay-gray-900);
   margin-bottom: 4px;
 }
 
 .date {
-  color: var(--satispay-gray-500);
+  color: var(--dragonpay-gray-500);
   font-size: 14px;
 }
 
@@ -75,9 +75,9 @@
 }
 
 .amount.negative {
-  color: var(--satispay-error);
+  color: var(--dragonpay-error);
 }
 
 .amount.positive {
-  color: var(--satispay-success);
+  color: var(--dragonpay-success);
 }
